@@ -1,0 +1,44 @@
+@import "palette";
+
+%container {
+  max-width: 38rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+}
+
+.SiteNav {
+  padding: 1rem;
+  display: flex;
+  font-family: $sans-serif;
+
+  ul {
+    padding: 0;
+    margin: 0 0 0 auto;
+    display: flex;
+    list-style-type: none;
+  }
+  li {
+    &::before {
+      content: "";
+    }
+    display: block;
+    margin: 0;
+  }
+  a {
+    text-decoration: none;
+    color: $text-color;
+    margin: 0 1rem;
+  }
+}
+
+.SiteMain {
+  @extend %container;
+}
+
+.SiteHeader {
+  text-align: center;
+  h1 {
+    font-family: $sans-serif;
+  }
+}

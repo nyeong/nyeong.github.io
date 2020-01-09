@@ -1,0 +1,98 @@
+@import "palette";
+@import "vendor/normalize";
+@import "vendor/syntax";
+@import "vendor/list-style";
+
+body {
+  font-family: $body-font-family;
+  color: $text-color;
+  font-size: $font-size;
+  line-height: $line-height;
+  background: $bg-color;
+  text-rendering: optimizeLegibility;
+  word-break: keep-all;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $header-font-family;
+  color: $header-color;
+  word-break: keep-all;
+}
+
+a {
+  @include highlight-on-hover();
+  color: $primary-color;
+}
+
+%default-block {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  max-width: 100%;
+}
+
+%extend-block {
+  display: block;
+  margin: 1rem -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+p,
+img {
+  @extend %default-block;
+}
+
+pre,
+code {
+  font-family: $monospace;
+  font-feature-settings: "calt";
+  font-variant-ligatures: contextual;
+}
+
+pre {
+  line-height: 1.3;
+  code {
+    padding: 0;
+    background-color: transparent;
+  }
+}
+
+code {
+  background-color: $oc-gray-1;
+  font-size: 0.8em;
+  padding: 3px 5px;
+}
+
+@supports (font-variation-settings: normal) {
+  code {
+    font-family: "Fira Code VF", $monospace;
+  }
+}
+
+div.highlight {
+  @extend %extend-block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color: $oc-gray-8;
+  background: $oc-gray-1;
+  pre {
+    margin: 0;
+  }
+}
+
+blockquote {
+  @extend %extend-block;
+  color: $text-color-light;
+  border-left: 0.25rem solid $text-color-light;
+  font-size: 1.2rem;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}

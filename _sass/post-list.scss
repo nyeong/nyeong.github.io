@@ -1,0 +1,23 @@
+.PostList {
+  list-style-type: none;
+  margin: 0;
+  .item {
+    margin: 0 0 0.8rem 0;
+    .right {
+      float: right;
+      color: $text-color-light;
+    }
+
+    .title {
+      font-size: 1.3rem;
+      color: $text-color;
+    }
+    &::before {
+      content: none;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+}

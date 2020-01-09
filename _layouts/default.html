@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/assets/style.css">
+  <title>
+    {% if page.title %}
+      {{ page.title }} - {{ site.title }}
+    {% else %}
+      {{ site.title }}
+    {% endif %}
+  </title>
+</head>
+
+<body>
+  <nav class="SiteNav">
+    <a href="/">안녕</a>
+    <ul>
+      <li><a href="/categories">카테고리</a></li>
+      <li><a href="/about">소개</a></li>
+    </ul>
+  </nav>
+
+  <header class="SiteHeader">
+    <h1 class="title">
+      {{ page.title }}
+    </h1>
+    <p>
+      {% if page.category %}
+        <a href="/categories#{{ page.category | slugize }}" class="Category">{{ page.category }}</a>
+      {% endif %}
+    </p>
+  </header>
+
+  <main class="SiteMain">
+    {{ content }}
+  </main>
+</body>
+
+</html>

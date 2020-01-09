@@ -1,0 +1,26 @@
+---
+title: 카테고리
+---
+
+<ul class="CategoryList">
+{% for category in site.categories %}
+  {% assign category_name = category | first %}
+  <li class="item"><a href="#{{ category_name | slugify }}" class="Category">{{ category_name }}</a></li>
+{% endfor %}
+</ul>
+
+{% for category in site.categories %}
+{% assign category_name = category | first %}
+{% assign posts = category[1] %}
+<section>
+  <h3 id="{{ category_name | slugify }}">{{ category_name }}</h3>
+  <ol class="PostList">
+  {% for post in posts %}
+    <li class="item">
+      <a href="{{ post.url }}" class="title">{{ post.title }}</a>
+      <time class="right">{{ post.date | date: "%Y년 %m월 %d일" }}</time>
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+{% endfor %}
