@@ -106,4 +106,13 @@ remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
 
 ```
 $ git add index.html
+$ git commit -m "init"
+$ git push origin -u master
 ```
+
+이후 저장소의 옵션에 들어가면 GitHub Pages가 활성화 된 것을 볼 수 있다. 🥳
+
+![](/images/github-pages-online.png)
+
+물론 모든 글을 html로 직접 짜 올리기는 어렵다. Jekyll, Hugo 같은 **정적 웹 사이트 생성기**를
+이용하여 이 과정을 줄일 수 있다.
