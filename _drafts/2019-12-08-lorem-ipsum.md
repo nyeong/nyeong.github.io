@@ -1,7 +1,8 @@
 ---
 title: Lorem Ipsum
-category: lorem ipsum
+category: Lorem Ipsum
 tags: tag1, tag2
+excerpt: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet arcu a diam tincidunt porta. Fusce ut elit euismod massa convallis volutpat vitae et magna.

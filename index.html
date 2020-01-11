@@ -3,7 +3,8 @@ title: 안녕
 ---
 
 <ul class="PostList">
-{% for post in site.posts %}
+{% assign posts = site.posts | sort: date | reverse %}
+{% for post in posts %}
   <li class="item">
     <a href="{{ post.url }}" class="title">{{ post.title }}</a>
     <a href="/categories#{{ post.category | slugify }}" class="right Category">

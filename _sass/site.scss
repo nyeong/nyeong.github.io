@@ -37,8 +37,16 @@
 }
 
 .SiteHeader {
+  @extend %container;
   text-align: center;
   h1 {
     font-family: $sans-serif;
   }
+}
+
+.SiteFooter {
+  @extend %container;
+  color: $text-color-light;
+  text-align: right;
+  font-size: 0.8em;
 }

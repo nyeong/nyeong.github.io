@@ -24,6 +24,15 @@ h6 {
   word-break: keep-all;
 }
 
+h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.7rem;
+}
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
 a {
   @include highlight-on-hover();
   color: $primary-color;
@@ -94,5 +103,34 @@ blockquote {
 
   p:last-child {
     margin-bottom: 0;
+  }
+}
+
+dl {
+  margin: 0 0 1.5rem 0;
+  padding: 0;
+}
+
+dt {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+dd {
+  margin-bottom: 0.5rem;
+  margin-left: 1.7rem;
+}
+
+#markdown-toc {
+  font-size: 0.9rem;
+  border: 1px solid $oc-indigo-1;
+  padding: 0.5rem 0;
+
+  a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-bottom: 0.2rem;
   }
 }

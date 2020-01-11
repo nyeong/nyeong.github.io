@@ -13,6 +13,7 @@
       {{ site.title }}
     {% endif %}
   </title>
+  {% feed_meta %}
 </head>
 
 <body>
@@ -38,6 +39,11 @@
   <main class="SiteMain">
     {{ content }}
   </main>
+
+  <footer class="SiteFooter">
+    Reposisted at
+    <a href="{{ site.github.repository_url }}">{{ site.github.repository_nwo }}</a>.
+  </footer>
 </body>
 
 </html>

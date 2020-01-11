@@ -11,7 +11,7 @@ title: 카테고리
 
 {% for category in site.categories %}
 {% assign category_name = category | first %}
-{% assign posts = category[1] %}
+{% assign posts = category[1] | sort: date | sort: title %}
 <section>
   <h3 id="{{ category_name | slugify }}">{{ category_name }}</h3>
   <ol class="PostList">
