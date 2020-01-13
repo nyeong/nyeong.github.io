@@ -63,7 +63,8 @@ img {
 }
 
 pre,
-code {
+code,
+kbd {
   font-family: $monospace;
   font-feature-settings: "calt";
   font-variant-ligatures: contextual;
@@ -72,6 +73,7 @@ code {
 pre {
   line-height: 1.3;
   overflow-x: scroll;
+  overflow-y: hidden;
 
   code {
     padding: 0;
@@ -79,10 +81,18 @@ pre {
   }
 }
 
-code {
+code,
+kbd {
   background-color: $oc-gray-1;
   font-size: 0.8em;
-  padding: 3px 5px;
+  padding: 2px 4px;
+}
+
+kbd {
+  padding-bottom: 1px;
+  border-bottom: 1px $oc-gray-3 solid;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 @supports (font-variation-settings: normal) {
