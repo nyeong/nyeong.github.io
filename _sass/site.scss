@@ -22,13 +22,17 @@
     &::before {
       content: "";
     }
+    &:last-child a {
+      margin-right: 0;
+    }
     display: block;
     margin: 0;
   }
+
   a {
     text-decoration: none;
     color: $text-color;
-    margin: 0 1rem;
+    margin: 0 1rem 0 0;
   }
 }
 
