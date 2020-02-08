@@ -1,0 +1,20 @@
+@import "../styles/palette.scss";
+
+.post-nav {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+  }
+
+  a {
+    @include color-assign(color, body-text);
+    text-decoration: none;
+    padding: 1rem;
+    &:hover {
+      @include color-assign(background-color, hr-border);
+    }
+  }
+}

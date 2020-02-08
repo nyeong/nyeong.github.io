@@ -1,0 +1,10 @@
+@import "../styles/palette.scss";
+
+// @week-style
+.layout-footer {
+  @extend %container;
+  @include color-assign(color, body-week-text);
+  font-size: 0.9em;
+  text-align: right;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,145 @@
+@import "../../node_modules/normalize.css/normalize.css";
+@import "./vendors/prism-onedark.scss";
+@import "./palette";
+
+body {
+  @include color-assign(color, body-text);
+  @include color-assign(background-color, body-bg);
+  font-family: $body-font-family;
+  font-size: $body-font-size;
+  line-height: $line-height;
+  word-break: keep-all;
+  text-rendering: optimizeLegibility;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  @include color-assign(background-color, selection-bg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @include color-assign(color, header-text);
+  font-family: $header-font-family;
+}
+
+h2 {
+  font-size: 1.7rem;
+  font-weight: normal;
+  margin-top: 2.5rem;
+  margin-bottom: $base-margin / 2;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: $base-margin / 2;
+}
+
+p,
+img,
+ul,
+ol {
+  margin-bottom: $base-margin;
+}
+
+strong {
+  @include color-assign(color, strong-text);
+}
+
+a {
+  @include color-assign(color, link-text);
+  @include transition(color, background-color);
+
+  &:hover {
+    @include color-assign(background-color, link-hover-bg);
+    @include color-assign(color, link-hover-text);
+  }
+  &:focus {
+    @include color-assign(box-shadow, link-hover-border, "0 0 0 2px here");
+    border-radius: 3px;
+    outline: none;
+  }
+  &:hover::selection {
+    @include color-assign(background-color, link-selection-hover-bg);
+  }
+  &.gatsby-resp-image-link {
+    &:hover {
+      @include color-assign(background-color, hr-border);
+    }
+  }
+}
+
+ul,
+ol,
+dl {
+  padding-left: 1rem;
+}
+
+li,
+dd {
+  margin-bottom: $base-margin * 0.4;
+}
+
+dt {
+  font-weight: bold;
+  @include color-assign(color, strong-text);
+}
+
+dd {
+  margin-left: 1rem;
+}
+
+img {
+  max-width: 100%;
+}
+
+// Code
+code,
+pre,
+kbd {
+  font-family: $code-font-family;
+}
+
+:not(pre) > code[class*="language-"],
+kbd {
+  @include color-assign(background-color, code-bg);
+  @include color-assign(color, code-text);
+  font-size: 0.85em;
+  padding: 2px 4px;
+  border-radius: 3px;
+  &::selection {
+    @include color-assign(background-color, code-selection-bg);
+  }
+}
+
+pre {
+  code {
+    background-color: transparent;
+    padding: 0;
+  }
+}
+
+kbd {
+  @include color-assign(border-bottom-color, kbd-border);
+  padding-bottom: 1px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+hr {
+  @include color-assign(border-bottom-color, hr-border);
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
