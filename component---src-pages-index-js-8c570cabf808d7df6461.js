@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[5],{RXBc:function(e,t,a){"use strict";a.r(t),a.d(t,"pageQuery",(function(){return o}));var n=a("q1tI"),r=a.n(n),l=a("Bl7J"),c=a("vrFN"),i=a("I5CP");t.default=function(e){var t=e.data,a=e.location,n=t.site.siteMetadata.title,o=t.allMarkdownRemark.edges;return r.a.createElement(l.a,{location:a,title:n},r.a.createElement(c.a,{title:"모든 포스트"}),r.a.createElement("h1",null,"하나씩"),r.a.createElement(i.a,{posts:o}))};var o="2028892559"}}]);
+//# sourceMappingURL=component---src-pages-index-js-8c570cabf808d7df6461.js.map
