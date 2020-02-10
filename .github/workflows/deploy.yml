@@ -20,5 +20,7 @@ jobs:
         run: yarn build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        publish_dir: ./public
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./public
+          publish_branch: master
