@@ -23,9 +23,7 @@ jobs:
           repository: nyeong/hanassig
           path: content
 
-      - run: pwd
-      - run: ls -al
-      - run: cp -r content-prepare/* content/
+      - run: cp -r content-prepared/* content/
 
       - uses: actions/setup-ruby@v1
         with:
