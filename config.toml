@@ -1,6 +1,6 @@
-baseURL = "https://quartz.jzhao.xyz/"
-languageCode = "en-us"
-googleAnalytics = "G-XYFD95KB4J"
+baseURL = "https://annyeong.me/"
+languageCode = "ko-kr"
+googleAnalytics = "G-SB3T1K5D2H"
 relativeURLs = false
 disablePathToLower = true
 ignoreFiles = [
