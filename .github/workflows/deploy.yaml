@@ -11,16 +11,18 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        ruby: [ '2.5', '2.6' ]
+        ruby: [ '2.7' ]
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
-      - uses: actions/checkout@v3
+      - name: Clone contents from nyeong/hanassig
+        uses: actions/checkout@v3
         with:
-          name: nyeong/hanassig
+          repository: nyeong/hanassig
 
+      - run: ls -al
       - run: mv hanassig content
       - run: cp -r content-prepare/* content/
 
