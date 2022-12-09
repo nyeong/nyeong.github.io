@@ -24,6 +24,7 @@ jobs:
           path: content
 
       - run: cp -r content-prepared/* content/
+      - run: mkdir -p assets/indices
 
       - uses: actions/setup-ruby@v1
         with:
