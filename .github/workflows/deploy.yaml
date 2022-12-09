@@ -22,6 +22,7 @@ jobs:
         with:
           repository: nyeong/hanassig
 
+      - run: cd ..
       - run: ls -al
       - run: mv hanassig content
       - run: cp -r content-prepare/* content/
