@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-files = Dir["**/*.md"]
+files = Dir["**/content/*.md"]
 
 files.each do |filename|
   text = File.read(filename)
