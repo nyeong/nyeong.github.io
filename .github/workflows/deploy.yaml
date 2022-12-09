@@ -4,15 +4,34 @@ on:
   push:
     branches:
       - hugo
+  workflow_dispath:
+    inputs:
+      job: build
+
 
 jobs:
   deploy:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        ruby: [ '2.5', '2.6' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
+      - uses: actions/checkout@v3
+        with:
+          name: nyeong/hanassig
+
+      - run: mv hanassig content
+      - run: cp -r content-prepare/* content/
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - run: ruby ./bin/update-link-format.sh
+      
       - name: Build Link Index
         uses: jackyzha0/hugo-obsidian@v2.18
         with:

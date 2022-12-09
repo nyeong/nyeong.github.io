@@ -1,29 +1,28 @@
-name: Jacky Zhao
+name: An Nyeong
 enableToc: true
-openToc: false
+openToc: true
 enableLinkPreview: true
 enableLatex: true
 enableCodeBlockTitle: true
 enableCodeBlockCopy: true
 enableCallouts: true
-enableSPA: true
+enableSPA: false
 enableFooter: true
 enableContextualBacklinks: true
-enableRecentNotes: false
+enableRecentNotes: true
 enableGitHubEdit: true
 enableMermaid: true
-GitHubLink: https://github.com/jackyzha0/quartz/tree/hugo/content
+GitHubLink: https://github.com/nyeong/hanassig/tree/main
 search:
   enableSemanticSearch: false
   operandApiKey: "REPLACE-WITH-YOUR-OPERAND-API-KEY"
   operandIndexId: "REPLACE-WITH-YOUR-OPERAND-INDEX-ID"
 description:
-  Host your second brain and digital garden for free. Quartz features extremely fast full-text search,
-  Wikilink support, backlinks, local graph, tags, and link previews.
+  배운 것을 하나씩 정리합니다.
 page_title:
-  "🪴 Quartz 3.3"
+  "하나씩"
 links:
-  - link_name: Twitter
-    link: https://twitter.com/_jzhao
+  - link_name: 연합우주
+    link: https://misskey.dev/@annyeong
   - link_name: Github
-    link: https://github.com/jackyzha0
+    link: https://github.com/nyeong
