@@ -1,0 +1,280 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=description content="타입은 집합이다 타입을 집합으로 생각해보자.
+정수 타입 i32를 생각해보자. 보통 이 타입은 구간 $[-2^{31},2^{31} - 1]$에 속한 정수를 표현할 수 있다."><title>하나씩</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://quartz.jzhao.xyz//icon.png><link href=https://quartz.jzhao.xyz/styles.706bb6073ba85d26809f9096dae23a6b.min.css rel=stylesheet><link href=https://quartz.jzhao.xyz/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://quartz.jzhao.xyz/js/darkmode.63d6a3e095d0bd2b935b62adec9dc11b.min.js></script>
+<script src=https://quartz.jzhao.xyz/js/util.5e39932758f9ecaf45fd54506ed61416.min.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/copy-tex.min.js integrity=sha384-ww/583aHhxWkz5DEVn6OKtNiIaLi2iBRNZXfJRiY1Ai7tnJ9UXpEsyvOITVpTl4A crossorigin=anonymous></script>
+<script src=https://unpkg.com/@floating-ui/core@0.7.3></script>
+<script src=https://unpkg.com/@floating-ui/dom@0.5.4></script>
+<script src=https://quartz.jzhao.xyz/js/popover.6da9b273c092cc16fc1aa904d71a2163.min.js></script>
+<script src=https://quartz.jzhao.xyz/js/code-title.b35124ad8db0ba37162b886afb711cbc.min.js></script>
+<script src=https://quartz.jzhao.xyz/js/clipboard.c20857734e53a3fb733b7443879efa61.min.js></script>
+<script src=https://quartz.jzhao.xyz/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const SEARCH_ENABLED=!1,LATEX_ENABLED=!0,PRODUCTION=!0,BASE_URL="https://quartz.jzhao.xyz/",fetchData=Promise.all([fetch("https://quartz.jzhao.xyz/indices/linkIndex.f604dc5af2173d6d4799d6cb82546356.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://quartz.jzhao.xyz/indices/contentIndex.25f8a2657285f42c416d356ff7729786.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addCollapsibleCallouts(),initPopover("https://quartz.jzhao.xyz",!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://quartz.jzhao.xyz",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}var i=document.getElementsByClassName("mermaid");i.length>0&&import("https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs").then(e=>{e.default.init()})},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],macros:{'’':"'"},throwOnError:!1})}</script><script>window.Million={navigate:e=>window.location.href=e,prefetch:()=>{}},window.addEventListener("DOMContentLoaded",()=>{init(),render()})</script></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-XYFD95KB4J"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-XYFD95KB4J",{anonymize_ip:!1})}</script><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=Search placeholder="Search for something..."><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://quartz.jzhao.xyz/js/full-text-search.51f0b1753e9b30839d053f8a98cc20d1.min.js></script><div class=singlePage><header><h1 id=page-title><a href=https://quartz.jzhao.xyz/>하나씩</a></h1><div class=spacer></div><div id=search-icon><p>Search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><p class=meta>Last updated
+Unknown
+<a href=https://github.com/nyeong/hanassig/tree/main/notes/computer-science/category-theory/types-are-sets.md rel=noopener>Edit Source</a></p><ul class=tags></ul><aside class=mainTOC><details open><summary>Table of Contents</summary><nav id=TableOfContents><ol><li><a href=#사실-집합은-아니다>사실 집합은 아니다</a></li><li><a href=#타입은-집합이다-1>타입은 집합이다</a><ol><li><a href=#공집합>공집합</a></li><li><a href=#단위-집합>단위 집합</a></li><li><a href=#원소가-둘인-집합>원소가 둘인 집합</a></li><li><a href=#합집합>합집합</a></li><li><a href=#교집합>교집합</a></li><li><a href=#곱집합>곱집합</a></li></ol></li></ol></nav></details></aside><a href=#타입은-집합이다><h1 id=타입은-집합이다><span class=hanchor arialabel=Anchor># </span>타입은 집합이다</h1></a><p>타입을 집합으로 생각해보자.</p><p>정수 타입 <code>i32</code>를 생각해보자. 보통 이 타입은 구간 $[-2^{31},2^{31} - 1]$에 속한
+정수를 표현할 수 있다. 구간 내의 정수를 원소로, 타입 <code>i32</code>를 집합으로 볼 수
+있다.</p><p>$$
+\text{i32} = {x\mid -2^{31}, \cdots, -1, 0, 1, \cdots, 2^{31} - 1}
+$$</p><p><code>i32</code>를 인자로 취하는 함수를 생각해보자. 아래의 함수 <code>i32</code>는 수를 제곱해준다.
+따라서 반환 타입도 <code>i32</code>이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>square</span><span class=p>(</span><span class=n>n</span>: <span class=kt>i32</span><span class=p>)</span><span class=w> </span>-&gt; <span class=kt>i32</span> <span class=p>{</span><span class=w> </span><span class=n>n</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>n</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>이를 집합으로 생각해보자. 함수 $\operatorname{square}$는 $\text{i32}$를 취하여
+$\text{i32}$를 반환하는 함수이다.</p><p>$$
+\operatorname{square}: \text{i32} \rarr \text{i32}
+$$</p><p>타입을 집합으로 생각하면 아래처럼 볼 수 있다:</p><ul><li>값은 원소이다.</li><li>타입은 가능한 값들의 집합이다.</li><li>함수는&mldr; 함수이다. 집합의 함수가 그러하듯 어떤 타입을 다른 타입과 이어준다.</li></ul><a href=#사실-집합은-아니다><h2 id=사실-집합은-아니다><span class=hanchor arialabel=Anchor># </span>사실 집합은 아니다</h2></a><p>그러나 프로그래밍 언어는 컴퓨터에 내리는 명령이고, 정의만으로 끝나는 것이 아니라
+실제로 수행하는 작업의 나열이다. 어떤 때에는 작업이 끝나지 않을 수도 있다.
+그리고 작업이 끝나지 않는 것을 미리 알 수 있는 방법은 없다.<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>some_function</span><span class=p>(</span><span class=n>arg</span>: <span class=kt>bool</span><span class=p>)</span><span class=w> </span>-&gt; <span class=kt>bool</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 이 함수가 정상적으로 `bool`을 반환하지 않을 수도 있다.
+</span></span></span></code></pre></td></tr></table></div></div><p>위의 함수가 정상적으로 <code>bool</code>을 반환한다는 것은 보장할 수 없다.
+무한 루프에 빠질 수도 있고, 무한 재귀에 빠질 수도 있고, 예외가 발생할 수도
+있고, 에러가 날 수도 있고, 프로그램이 강제 종료 될 수도 있다.
+아니면 결과가 나오기 전에 컴퓨터가 폭발하여 사라질 수도 있다.</p><p>따라서 끝나지 않는 작업(<em>non-terminating computation</em>)을 표현하기 위하여
+<em>bottom</em>이라는 값이 도입되었다. $\bot$으로 표기한다.
+모든 타입은 <code>⊥</code>을 값으로 갖는다. 특정 타입을 반환할 때만 안전하리라는 보장이
+없기 때문이다. 따라서 <code>bool</code> 타입은 <code>true</code>, <code>false</code>, <code>⊥</code>을 값으로 취한다.</p><p><code>⊥</code>도 <code>bool</code> 타입이기 때문에 아래의 코드는 정상적으로 컴파일된다.
+그리고 의도대로 <code>true</code>도 <code>false</code>도 아닌 <code>⊥</code>을 반환할 것이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>some_function</span><span class=p>(</span><span class=n>_arg</span>: <span class=kt>bool</span><span class=p>)</span><span class=w> </span>-&gt; <span class=kt>bool</span> <span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=fm>panic!</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>⊥</code>의 존재로 프로그래밍 언어의 타입은 엄밀히 말하여 집합은 아니다. 그러나
+<code>⊥</code>만 제외한다면 집합과 유사하기 때문에 집합으로 생각하여도 괜찮다.</p><a href=#타입은-집합이다-1><h2 id=타입은-집합이다-1><span class=hanchor arialabel=Anchor># </span>타입은 집합이다</h2></a><p>타입을 집합이라고 생각해도 괜찮다. 타입을 집합으로 생각하면 프로그램을 분석하기
+쉬워진다.</p><p>프로그램이 옳은지 분석하고 검증하는 것은 어려운 일이다. 프로그램을 함수의
+결합(<em>composition</em>)으로 생각하고, 유효한 결합인지 검증하는 것은 훨씬 쉽다.
+또한 프로그래밍 언어는 각 언어 설계자의 취향과 의도에 따라 서로 다른 용어를
+사용하는데, 이를 집합으로 봄으로써 동일한 언어와 용어로 분석할 수 있다.</p><a href=#공집합><h3 id=공집합><span class=hanchor arialabel=Anchor># </span>공집합</h3></a><p>공집합(<em>empty set</em>)은 아무런 원소가 없는 집합이다. $\varnothing$ 혹은 ${}$로
+표기한다. 공집합에 대응하는 타입을 상상해보자.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>enum</span> <span class=nc>EmptySet</span><span class=w> </span><span class=p>{}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>let</span><span class=w> </span><span class=n>some_value</span>: <span class=nc>EmptySet</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>???</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>EmptySet</code>이라는 타입은 존재하지만 그 타입에 속하는 값이 존재하지 않는다.
+<code>EmptySet</code>을 인자로 취하는 함수를 상상해보자.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>absurd</span><span class=p>(</span><span class=n>arg</span>: <span class=nc>EmptySet</span><span class=p>)</span><span class=w> </span>-&gt; <span class=nc>T</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>위 함수를 호출할 수 있을까? <code>EmptySet</code>을 인자로 취하기 때문에 값을 넘겨주어야
+하지만 <code>EmptySet</code> 타입인 값은 존재하지 않는다. 따라서 위의 함수는 호출할 수 없다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=n>absurd</span><span class=p>(</span><span class=o>???</span><span class=p>);</span><span class=w> </span><span class=c1>// 인자로 넘겨줄 값이 존재하지 않다.
+</span></span></span></code></pre></td></tr></table></div></div><p><code>EmptySet</code>을 반환하는 함수는 만들 수 있을까? 얼핏보아서는 불가능할 것 같다.
+반환하면 <code>EmptySet</code>의 원소를 메모리에 표현해야하는데, 존재하지 않는 것을 메모리에
+표현할 수는 없다.</p><p>그럼에도 <code>EmptySet</code>을 반환하는 함수를 정의하고 실행할 수 있다. 말장난 같지만
+끝나지 않는 작업을 $\bot$이라는 값으로 정의하였고, 모든 타입은 $\bot$을 원소로
+갖기 때문에 공타입 <code>enum EmptySet {}</code> 또한 $\bot$을 원소로 취한다.</p><p>따라서 아래 함수는 정의할 수 있고, 컴파일되고, 실행할 수 있다.
+아래가 바로 공타입을 반환하는 함수이다. 정말 대단해.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>some_function</span><span class=p>()</span><span class=w> </span>-&gt; <span class=nc>EmptySet</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>loop</span><span class=w> </span><span class=p>{}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>러스트에서는 원시타입으로
+<a href=https://doc.rust-lang.org/std/primitive.never.html rel=noopener>never</a>가 정의되어 있으며 <code>!</code><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>로 표기하기 때문에
+<em>bang-type</em>이라고도 부른다. 위의 <code>EmptySet</code>은 <code>!</code>로 대체할 수 있다.</p><p>대체 이걸 어디다 써먹는단 말인가? 위에서 보았듯이 공타입은 오로지 $\bot$, 즉
+<strong>반환이 없음</strong>만을 그 값으로 취할 수 있다. 따라서 이를 표현하는 타입으로 활용할 수 있다.
+문제가 있는 경우를 타입으로 표기함으로써 이를 타입 시스템에서 파악할 수 있다.</p><p>현재 프로세스를 종료하는 러스트 표준 함수 <code>std::process::exit</code>의 타입은 아래와 같다:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>pub</span><span class=w> </span><span class=k>fn</span> <span class=nf>exit</span><span class=p>(</span><span class=n>code</span>: <span class=kt>i32</span><span class=p>)</span><span class=w> </span>-&gt; <span class=o>!</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>반환형이 <code>!</code>이기 때문에 이 함수가 실행되면 다음 작업을 실행할 수 없음을 알 수 있다.
+덕분에 컴파일러가 아래처럼 실행 전에 미리 경고해줄 수 있다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>main</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>std</span>::<span class=n>process</span>::<span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//  --------------------- any code following this expression is unreachable
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>    </span><span class=fm>println!</span><span class=p>(</span><span class=s>&#34;Hello, World!&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//  ^^^^^^^^^^^^^^^^^^^^^^^^^ unreachable statement
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><a href=#단위-집합><h3 id=단위-집합><span class=hanchor arialabel=Anchor># </span>단위 집합</h3></a><p>단위 집합(<em>unit set</em>)은 단 하나의 원소만을 갖고 있는 집합이다.
+원소가 하나니까 싱글톤(<em>singleton</em>)이라고도 불리운다. 싱글톤 패턴의 그 싱글톤 맞다.</p><p>싱글톤 패턴은 어떤 클래스에 대한 인스턴스가 오직 단 하나만 존재하도록 하는
+디자인 패턴이다. 아래의 예시에서 변수 <code>x</code>, <code>y</code>, <code>z</code> 모두 같은 싱글톤 인스턴스를
+가리키고 있다. 인스턴스가 단 하나이기 때문에 싱글톤이라는 이름이 붙었다:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Singleton</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=kd>static</span> <span class=n>Singleton</span> <span class=n>instance</span> <span class=o>=</span> <span class=kc>null</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=nf>Singleton</span><span class=o>()</span> <span class=o>{</span> <span class=cm>/* initiating Singleton object */</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kd>static</span> <span class=n>Singleton</span> <span class=nf>getInstance</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=o>(</span><span class=n>instance</span> <span class=o>==</span> <span class=kc>null</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>instance</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Singleton</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>instance</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// in other methods...
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>Singleton</span> <span class=n>x</span> <span class=o>=</span> <span class=n>Singleton</span><span class=o>.</span><span class=na>getInstance</span><span class=o>();</span>
+</span></span><span class=line><span class=cl><span class=n>Singleton</span> <span class=n>y</span> <span class=o>=</span> <span class=n>Singleton</span><span class=o>.</span><span class=na>getInstance</span><span class=o>();</span>
+</span></span><span class=line><span class=cl><span class=n>Singleton</span> <span class=n>z</span> <span class=o>=</span> <span class=n>Singleton</span><span class=o>.</span><span class=na>getInstance</span><span class=o>();</span>
+</span></span></code></pre></td></tr></table></div></div><p>어떤 언어에서는 특별한 값을 나타내기 위해 단위 타입을 사용한다.
+루비의 <code>true</code>, <code>false</code>, <code>nil</code> 등의 값은 <code>TrueClass</code>, <code>FalseClass</code>, <code>NilClass</code>의
+유일한 값이다. 따라서 이들은 단위 타입이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=line><span class=cl><span class=n>irb</span><span class=o>&gt;</span> <span class=kp>true</span>
+</span></span><span class=line><span class=cl><span class=o>=&gt;</span> <span class=kp>true</span>
+</span></span><span class=line><span class=cl><span class=n>irb</span><span class=o>&gt;</span> <span class=kp>true</span><span class=o>.</span><span class=n>class</span>
+</span></span><span class=line><span class=cl><span class=no>TrueClass</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>TrueClass</code>의 원소는 ($\bot$을 제외하면) <code>true</code> 말고는 없다.</p><p>$$
+\text{TrueClass} = {\text{true}}
+$$</p><p>단위 타입은 사실 암묵적으로 정말 많이 쓰이고 있다. 아래의 예시를 통해 알아보자.
+아래의 함수 <code>hello_world</code>는 아무 인자를 취하지 않고 <code>String</code>을 반환하고 있다.
+아무것도 아닌 것을 인자로 취하는 공타입과는 구별된다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=c1>// 인자를 취하지 아니함
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>fn</span> <span class=nf>hello_world</span><span class=p>()</span><span class=w> </span>-&gt; <span class=nb>String</span> <span class=p>{</span><span class=w> </span><span class=cm>/* ... */</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 인자를 넘기지 않아도 실행된다
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>let</span><span class=w> </span><span class=n>hi</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hello_world</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 아무것도 아닌 것을 인자로 취하는 공타입과는 다르다
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>fn</span> <span class=nf>hello_world</span><span class=p>(</span><span class=n>arg</span>: <span class=o>!</span><span class=p>)</span><span class=w> </span>-&gt; <span class=nb>String</span> <span class=p>{</span><span class=w> </span><span class=cm>/* ... */</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 아무것도 아닌 것을 인자로 넘길 수는 없다...
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>let</span><span class=w> </span><span class=n>hi</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hello_world</span><span class=p>(</span><span class=o>???</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>정말 아무것도 취하지 않고 <code>String</code>을 반환한다면 사실상 <code>String</code>과
+동일해야 한다. 그러나 <code>hello_world</code>는 <code>String</code>은 아니다.
+아래의 예시는 타입 에러가 난다:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>hello_world</span><span class=p>()</span><span class=w> </span>-&gt; <span class=nb>String</span> <span class=p>{</span><span class=w> </span><span class=cm>/* ... */</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>let</span><span class=w> </span><span class=n>hello_string</span>: <span class=nb>String</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>fn</span> <span class=nf>print_it</span><span class=p>(</span><span class=n>arg</span>: <span class=kp>&amp;</span><span class=nb>String</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>print_it</span><span class=p>(</span><span class=o>&amp;</span><span class=n>hello_world</span><span class=p>);</span><span class=w>  </span><span class=c1>// mismatched types
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>print_it</span><span class=p>(</span><span class=o>&amp;</span><span class=n>hello_string</span><span class=p>);</span><span class=w> </span><span class=c1>// 문제 없음
+</span></span></span></code></pre></td></tr></table></div></div><p><code>hello_world</code>는 그냥 <code>String</code>인 것이 아니라 <strong>아무것도 아닌 무언가를 <code>String</code>으로
+바꿔주는 함수</strong>이다. 아무것도 아닌 무언가의 역할을 할 것이 있어야 하는데 이
+암묵적인 역할을 단위 타입이 맡는다. 러스트에서는 이를
+<a href=https://doc.rust-lang.org/stable/std/primitive.unit.html rel=noopener><code>()</code></a>으로 표기하고
+유닛이라고 읽는다. <code>hello_world</code> 함수를 인자로 받는 함수는 아래와 같다:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>print_it</span><span class=p>(</span><span class=n>arg</span>: <span class=nc>dyn</span><span class=w> </span><span class=o>&amp;</span><span class=nb>Fn</span><span class=p>()</span><span class=w> </span>-&gt; <span class=nb>String</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>print_it</span><span class=p>(</span><span class=o>&amp;</span><span class=n>hello_world</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>아무것도 반환하지 않는 함수도 사실은 아무것도 아닌 무언가를 반환하고 있다.
+아래의 셋은 동일하다:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>main</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=cm>/* ... */</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>fn</span> <span class=nf>main</span><span class=p>()</span><span class=w> </span>-&gt; <span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=cm>/* ... */</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>fn</span> <span class=nf>main</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=p>();</span><span class=w> </span><span class=p>}</span><span class=w> </span><span class=c1>// () 타입은 그 값도 ()로 표기한다.
+</span></span></span></code></pre></td></tr></table></div></div><p>C계열 언어에서는 반환값이 없는 함수를 표현할 때에 <code>void</code>로 선언하기 때문에
+좀 더 명시적으로 확인할 수 있다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>function_no_return</span><span class=p>()</span> <span class=p>{</span> <span class=cm>/* ... */</span> <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>단위 타입을 이용함으로써 아무것도 아님을 표현할 수 있다.</p><p>어떤 타입 <code>T</code>를 받아 단위 타입을 반환하는 함수는 타입 별로 딱 하나만 존재한다.
+예를 들어 <code>bool -> ()</code>인 함수는 아래의 함수 외에는 존재할 수 없다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>unit</span><span class=p>(</span><span class=n>_</span>: <span class=kt>bool</span><span class=p>)</span><span class=w> </span>-&gt; <span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=p>();</span><span class=w> </span><span class=p>}</span><span class=w> 
+</span></span></span></code></pre></td></tr></table></div></div><p>반대로 단위 타입을 받아 어떤 타입 <code>T</code>를 반환하려면, 타입 <code>T</code>의 원소 수만큼
+함수를 만들 수 있다. 예를 들어 <code>() -> bool</code>인 함수는 아래의 두 함수가 있다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>true</span><span class=p>()</span><span class=w> </span>-&gt; <span class=kt>bool</span> <span class=p>{</span><span class=w> </span><span class=kc>true</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>fn</span> <span class=nf>false</span><span class=p>()</span><span class=w> </span>-&gt; <span class=kt>bool</span> <span class=p>{</span><span class=w> </span><span class=kc>false</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><a href=#원소가-둘인-집합><h3 id=원소가-둘인-집합><span class=hanchor arialabel=Anchor># </span>원소가 둘인 집합</h3></a><p>원소가 둘인 집합은 그 값이 이거 아니면 저거인 집합이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>enum</span> <span class=nc>Boolean</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>True</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>False</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>우리에게 친숙한 원소가 둘인 집합은 바로 <code>bool</code>이다. <code>0</code>, <code>1</code>도 좋고
+<code>true</code>, <code>false</code>도 좋다. 어쨌든 원소는 둘뿐이어야한다.</p><p>$$
+\text{bool} = {\text{true}, \text{false}}
+$$</p><p><code>bool</code>을 취하여 <code>bool</code>을 반환하는 함수는 몇 개나 있을까? 집합 $F$의 갯수를
+생각해보자.</p><p>$$
+F = { f \mid f : \text{bool} \rarr \text{bool} }
+$$</p><p>아래와 같이 항등함수 두 개(<code>always</code>, <code>never</code>), 단위함수 하나(<code>id</code>), <code>not</code> 함수까지
+총 네 개를 생각할 수 있다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>fn</span> <span class=nf>always</span><span class=p>(</span><span class=n>_</span>: <span class=kt>bool</span><span class=p>)</span><span class=w> </span>-&gt; <span class=p>{</span><span class=w> </span><span class=kc>true</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>fn</span> <span class=nf>never</span><span class=p>(</span><span class=n>_</span>: <span class=kt>bool</span><span class=p>)</span><span class=w> </span>-&gt; <span class=p>{</span><span class=w> </span><span class=kc>false</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>fn</span> <span class=nf>id</span><span class=p>(</span><span class=n>b</span>: <span class=kt>bool</span><span class=p>)</span><span class=w> </span>-&gt; <span class=p>{</span><span class=w> </span><span class=n>b</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>fn</span> <span class=nf>not</span><span class=p>(</span><span class=n>b</span>: <span class=kt>bool</span><span class=p>)</span><span class=w> </span>-&gt; <span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>match</span><span class=w> </span><span class=n>b</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kc>true</span><span class=w> </span>-&gt; <span class=nc>false</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kc>false</span><span class=w> </span>-&gt; <span class=nc>true</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>우리가 흔히 쓰는 &ldquo;boolean 타입"과 완벽히 대응함을 알 수 있다.</p><a href=#합집합><h3 id=합집합><span class=hanchor arialabel=Anchor># </span>합집합</h3></a><p>두 집합 A, B가 있을 때, 두 집합의 모든 원소를 가지고 새로운 집합을 만들
+수 있다. 새로운 집합 $A \cup B$의 원소는 본래 $A$의 원소이거나 $B$의 원소이다.
+이를 합집합(<em>union</em>)이라 부르고 아래처럼 정의한다:</p><p>$$
+A \cup B = { x \mid x \in A \lor x \in B }
+$$</p><p>합집합에 대응하는 타입은 합타입(<em>union type</em> 혹은 <em>sum type</em>)이다.
+합타입을 이용하면 타입을 확장할 수 있다.
+아래의 예시에서 <code>Number</code>의 원소는 <code>i64</code>의 원소이거나 <code>f64</code>의 원소이다:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>enum</span> <span class=nc>Number</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Int</span><span class=p>(</span><span class=kt>i64</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Float</span><span class=p>(</span><span class=kt>f64</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>let</span><span class=w> </span><span class=n>a</span>: <span class=nc>Number</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Int</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>let</span><span class=w> </span><span class=n>b</span>: <span class=nc>Number</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Float</span><span class=p>(</span><span class=mf>1.1</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>어떤 언어는 다음처럼 쉽게 합집합을 표현할 수 있도록 한다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kd>function</span> <span class=nx>padLeft</span><span class=p>(</span><span class=nx>value</span>: <span class=kt>string</span><span class=p>,</span> <span class=nx>padding</span>: <span class=kt>string</span> <span class=o>|</span> <span class=kt>number</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>위의 <code>enum</code>으로 표현한 합타입과 밑의 <code>|</code>로 표현한 합타입은 무슨 차이가 있을까?
+같은 타입을 합쳤을 경우를 살펴보자:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kd>let</span> <span class=nx>bnb</span> <span class=o>=</span> <span class=kr>boolean</span> <span class=o>|</span> <span class=kr>boolean</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>|</code>로 같은 타입을 합집합을 만들 경우 본래의 타입과 다를 바가 없다. 같은 집합의
+원소를 모으면 본래의 집합과 동일하다.</p><p>$$
+\begin{aligned}
+\text{BnB} &= { x \mid x \in \text{boolean} \lor x \in \text{boolean} }\\ &= { x \mid x \in \text{boolean} }\\ &= {\text{true}, \text{false}}
+\end{aligned}
+$$</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-rust data-lang=rust><span class=line><span class=cl><span class=k>enum</span> <span class=nc>BnB</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>B1</span><span class=p>(</span><span class=kt>bool</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>B2</span><span class=p>(</span><span class=kt>bool</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>타입 생성자(위의 <code>B1</code>, <code>B2</code>)와 함께 정의한 경우 그냥 합집합이 아니라 서로소
+합집합(<em>disjoint union</em>)이 된다. <code>B1</code>으로 정의하는 <code>bool</code>과 <code>B2</code>로 정의하는
+<code>bool</code>은 서로 다른 타입이다. 값도 동일하지 않다. <code>B1(true)</code>과 <code>B2(true)</code>는
+다른 값이다. 따라서 타입 <code>BnB</code>의 가능한 값은 총 네 가지이다.</p><p>$$
+\begin{aligned}
+\text{BnB}
+&= {x \mid x \in \text{bool}_1 \lor x \in \text{bool}_2 }\\ &= {\text{true}_1, \text{false}_1, \text{true}_2, \text{false}_2}
+\end{aligned}
+$$</p><a href=#교집합><h3 id=교집합><span class=hanchor arialabel=Anchor># </span>교집합</h3></a><p>합집합이 있으므로 교집합도 있지 않을까?
+$A \cap B$는 $A$의 원소이면서 동시에 $B$의 원소인 값들의 집합이다.</p><p>$$
+A \cap B = {x \mid x \in A \land x \in B}
+$$</p><a href=#곱집합><h3 id=곱집합><span class=hanchor arialabel=Anchor># </span>곱집합</h3></a><p>집합을 합할 수 있으므로 곱할수도 있다. 곱집합(<em>product set</em>)은 두 집합의 원소로
+만들 수 있는 가능한 모든 쌍의 집합으로 정의한다.</p><p>$$
+A \times B = {(a, b) \mid a \in A \land b \in B }
+$$</p><p>곱타입은 구조체(<em>struct</em>) 혹은 튜플로 정의할 수 있다. 이를 이용하면
+타입을 조합할 수 있다.</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p><a href=https://en.wikipedia.org/wiki/Halting_problem rel=noopener>https://en.wikipedia.org/wiki/Halting_problem</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>Backlinks</h3><ul class=backlinks><li>No backlinks found</li></ul></div><div><script src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>Interactive Graph</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://quartz.jzhao.xyz/js/graph.abd4bc2af3869a96524d7d23b76152c7.js></script></div></div><div id=contact_buttons><footer><p>Made by An Nyeong using <a href=https://github.com/jackyzha0/quartz>Quartz</a>, © 2022</p><ul><li><a href=https://quartz.jzhao.xyz/>Home</a></li><li><a href=https://misskey.dev/@annyeong>연합우주</a></li><li><a href=https://github.com/nyeong>Github</a></li></ul></footer></div></div></body></html>
