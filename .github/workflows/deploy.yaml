@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-      - run: ruby ./bin/update-link-format.sh
+      - run: ruby ./bin/update-link-format.rb
       
       - name: Build Link Index
         uses: jackyzha0/hugo-obsidian@v2.18
