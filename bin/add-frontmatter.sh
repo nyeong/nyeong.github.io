@@ -2,6 +2,11 @@
 
 # USAGE: find notes -name '*.md' | ./bin/add-frontmatter.sh
 
+mode=0
+if [ $1 == "--pre-commit" ]; then
+  mode=1
+fi
+
 # add title in given file.
 # given file must have frontmatter block.
 add_title_to() {
@@ -10,6 +15,9 @@ add_title_to() {
 
   sed -i '' "1s/^---$/---\\
 title: ${filename%.md}/" "$1"
+  if [ $mode -eq 1 ]; then
+    git add "$1"
+  fi
 }
 
 # create frontmatter block in given file.
@@ -24,13 +32,19 @@ tags: []\\
 ---\\
 \\
 " "$1"
+  if [ $mode -eq 1 ]; then
+    git add "$1"
+  fi
 }
 
 # remove given file
 # given file must be empty.
 remove_empty() {
-  echo "[removed] $1"
+  echo "[delete] $1"
   rm $1
+  if [ $mode -eq 1 ]; then
+    git rm "$1"
+  fi
 }
 
 while read file
