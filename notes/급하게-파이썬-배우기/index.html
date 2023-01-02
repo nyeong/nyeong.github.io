@@ -1,0 +1,394 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=description content="REPL 1 2  # type 함수로 값의 타입을 알 수 있음 type({}) # => <class 'dict'>   산술연산 1 2 3 4 5 6 7 8 9 10 11 12 13  # 나누기 연산 결과는 float임 35 / 5 # => 7."><title>급하게 파이썬 배우기</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://annyeong.me//icon.png><link href=https://annyeong.me/styles.706bb6073ba85d26809f9096dae23a6b.min.css rel=stylesheet><link href=https://annyeong.me/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://annyeong.me/js/darkmode.359f54a40b51a8159d5004db91b32330.min.js></script>
+<script src=https://annyeong.me/js/util.5e39932758f9ecaf45fd54506ed61416.min.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/copy-tex.min.js integrity=sha384-ww/583aHhxWkz5DEVn6OKtNiIaLi2iBRNZXfJRiY1Ai7tnJ9UXpEsyvOITVpTl4A crossorigin=anonymous></script>
+<script src=https://unpkg.com/@floating-ui/core@0.7.3></script>
+<script src=https://unpkg.com/@floating-ui/dom@0.5.4></script>
+<script src=https://annyeong.me/js/popover.6da9b273c092cc16fc1aa904d71a2163.min.js></script>
+<script src=https://annyeong.me/js/code-title.b35124ad8db0ba37162b886afb711cbc.min.js></script>
+<script src=https://annyeong.me/js/clipboard.c20857734e53a3fb733b7443879efa61.min.js></script>
+<script src=https://annyeong.me/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const SEARCH_ENABLED=!1,LATEX_ENABLED=!0,PRODUCTION=!0,BASE_URL="https://annyeong.me/",fetchData=Promise.all([fetch("https://annyeong.me/indices/linkIndex.8201025703aaef396eecda4ba8642d89.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://annyeong.me/indices/contentIndex.881089c25353e70508d39d2710d649bb.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addCollapsibleCallouts(),initPopover("https://annyeong.me",!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://annyeong.me",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}var i=document.getElementsByClassName("mermaid");i.length>0&&import("https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs").then(e=>{e.default.init()})},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],macros:{'’':"'"},throwOnError:!1})}</script><script>window.Million={navigate:e=>window.location.href=e,prefetch:()=>{}},window.addEventListener("DOMContentLoaded",()=>{init(),render()})</script></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-SB3T1K5D2H"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-SB3T1K5D2H",{anonymize_ip:!1})}</script><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=Search placeholder="Search for something..."><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://annyeong.me/js/full-text-search.51f0b1753e9b30839d053f8a98cc20d1.min.js></script><div class=singlePage><header><h1 id=page-title><a href=https://annyeong.me/>하나씩</a></h1><div class=spacer></div><div id=search-icon><p>Search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><h1>급하게 파이썬 배우기</h1><p class=meta>Last updated
+Unknown
+<a href=https://github.com/nyeong/hanassig/tree/main/notes/%ea%b8%89%ed%95%98%ea%b2%8c%20%ed%8c%8c%ec%9d%b4%ec%8d%ac%20%eb%b0%b0%ec%9a%b0%ea%b8%b0.md rel=noopener>Edit Source</a></p><ul class=tags></ul><aside class=mainTOC><details open><summary>Table of Contents</summary><nav id=TableOfContents><ol><li><a href=#repl>REPL</a></li><li><a href=#산술연산>산술연산</a></li><li><a href=#논리-연산>논리 연산</a></li><li><a href=#문자열>문자열</a></li><li><a href=#제어구문>제어구문</a></li><li><a href=#자료구조>자료구조</a></li><li><a href=#익명함수>익명함수</a><ol><li><a href=#복사>복사</a></li></ol></li><li><a href=#클래스>클래스</a></li><li><a href=#이터-툴>이터 툴</a></li><li><a href=#모듈>모듈</a><ol><li><a href=#init>init</a></li><li><a href=#main>main</a></li><li><a href=#built-in-module>built-in module</a></li></ol></li></ol></nav></details></aside><a href=#repl><h2 id=repl><span class=hanchor arialabel=Anchor># </span>REPL</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># type 함수로 값의 타입을 알 수 있음</span>
+</span></span><span class=line><span class=cl><span class=nb>type</span><span class=p>({})</span> <span class=c1># =&gt; &lt;class &#39;dict&#39;&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#산술연산><h2 id=산술연산><span class=hanchor arialabel=Anchor># </span>산술연산</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># 나누기 연산 결과는 float임</span>
+</span></span><span class=line><span class=cl><span class=mi>35</span> <span class=o>/</span> <span class=mi>5</span> <span class=c1># =&gt; 7.0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 몫을 구하는 연산자가 따로 있음</span>
+</span></span><span class=line><span class=cl><span class=mi>35</span> <span class=o>//</span> <span class=mi>5</span> <span class=c1># =&gt; 7</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 모듈러 연산자도 있음</span>
+</span></span><span class=line><span class=cl><span class=mi>35</span> <span class=o>%</span> <span class=mi>3</span> <span class=c1># =&gt; 2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 제곱 연산자가 있음</span>
+</span></span><span class=line><span class=cl><span class=mi>2</span> <span class=o>**</span> <span class=mi>3</span> <span class=c1># =&gt; 8</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 형변환이 필요한 경우 `int`와 `float` 함수를 이용</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#논리-연산><h2 id=논리-연산><span class=hanchor arialabel=Anchor># </span>논리 연산</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># 참 거짓은 대문자로 시작</span>
+</span></span><span class=line><span class=cl><span class=kc>True</span>
+</span></span><span class=line><span class=cl><span class=kc>False</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># `not`, `and`, `or`</span>
+</span></span><span class=line><span class=cl><span class=ow>not</span> <span class=kc>True</span>
+</span></span><span class=line><span class=cl><span class=kc>True</span> <span class=ow>and</span> <span class=kc>True</span>
+</span></span><span class=line><span class=cl><span class=kc>False</span> <span class=ow>or</span> <span class=kc>True</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 산술 연산에서는 1과 0으로 취급함</span>
+</span></span><span class=line><span class=cl><span class=kc>True</span> <span class=o>+</span> <span class=kc>True</span> <span class=c1># =&gt; 2</span>
+</span></span><span class=line><span class=cl><span class=mi>1</span> <span class=o>==</span> <span class=kc>True</span> <span class=c1># =&gt; True</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># `bool` 함수를 생성자로 쓸 수 있음</span>
+</span></span><span class=line><span class=cl><span class=c1># 0, None, 빈 컨테이너는 False로 취급함</span>
+</span></span><span class=line><span class=cl><span class=c1># None은 null, nil과 같음.</span>
+</span></span><span class=line><span class=cl><span class=nb>bool</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=c1># =&gt; False</span>
+</span></span><span class=line><span class=cl><span class=nb>bool</span><span class=p>([])</span> <span class=c1># =&gt; False</span>
+</span></span><span class=line><span class=cl><span class=nb>bool</span><span class=p>({})</span> <span class=c1># =&gt; False</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 비교 연산은 `==`, `!=`. 나머지는 아는 대로.</span>
+</span></span><span class=line><span class=cl><span class=c1># `==`는 값의 비교. `is`는 존재의 비교</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=o>==</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=c1># =&gt; True</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=ow>is</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=c1># =&gt; False</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#문자열><h2 id=문자열><span class=hanchor arialabel=Anchor># </span>문자열</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># &#34;&#34;랑 &#39;&#39;랑 차이가 없음</span>
+</span></span><span class=line><span class=cl><span class=c1># 문자열 합치기는 `+`</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;안녕&#34;</span> <span class=o>+</span> <span class=s1>&#39;세상아&#39;</span> <span class=c1># =&gt; &#39;안녕세상아&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 배열 인덱싱 가능</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;안녕 세상아&#34;</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=c1># =&gt; &#39; &#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 길이 구하기는 `len()`</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 문자열 보간은 f&#34;`{variable}`&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 혹은 `&#34;{순서}&#34;.format()` 함수를 이용</span>
+</span></span><span class=line><span class=cl><span class=c1># 혹은 `% (value)` 이용</span>
+</span></span><span class=line><span class=cl><span class=n>age</span> <span class=o>=</span> <span class=s2>&#34;17&#34;</span>
+</span></span><span class=line><span class=cl><span class=sa>f</span><span class=s2>&#34;저는 영원한 </span><span class=si>{</span><span class=n>age</span><span class=si>}</span><span class=s2>세입니다&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 포맷팅</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>{0:5s}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>{0:&gt;10s}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>{0:&lt;10s}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>{cel:.2f}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#제어구문><h2 id=제어구문><span class=hanchor arialabel=Anchor># </span>제어구문</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># 삼항연산자는 TrueCaluse if Condition else FalseCaluse</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;good&#34;</span> <span class=k>if</span> <span class=kc>True</span> <span class=k>else</span> <span class=s2>&#34;bad&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 들여쓰기가 중요함</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>	<span class=s2>&#34;good&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>	<span class=s2>&#34;bad&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># for-in 문법</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>animal</span> <span class=ow>in</span> <span class=p>[</span><span class=s2>&#34;dog&#34;</span><span class=p>,</span> <span class=s2>&#34;cat&#34;</span><span class=p>]:</span>
+</span></span><span class=line><span class=cl>	<span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;</span><span class=si>{</span><span class=n>animal</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># for로 dict 순회</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>key</span> <span class=ow>in</span> <span class=n>a</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>	<span class=k>pass</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>val</span> <span class=ow>in</span> <span class=n>a</span><span class=o>.</span><span class=n>values</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>	<span class=k>pass</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>key</span><span class=p>,</span> <span class=n>val</span> <span class=ow>in</span> <span class=n>a</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>	<span class=k>pass</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># for comprehension</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>x</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=k>if</span> <span class=n>x</span> <span class=o>%</span> <span class=mi>2</span> <span class=o>==</span> <span class=mi>0</span><span class=p>]</span> <span class=c1># =&gt; [2]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># while문</span>
+</span></span><span class=line><span class=cl><span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>	<span class=k>pass</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#자료구조><h2 id=자료구조><span class=hanchor arialabel=Anchor># </span>자료구조</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># 리스트. 가변임</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># concat은 extend()</span>
+</span></span><span class=line><span class=cl><span class=n>l</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>m</span> <span class=o>=</span> <span class=p>[</span><span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>6</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>l</span><span class=o>.</span><span class=n>extend</span><span class=p>(</span><span class=n>m</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>l</span> <span class=c1># =&gt; [1, 2, 3, 4, 5, 6]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 원소 추가하기</span>
+</span></span><span class=line><span class=cl><span class=n>l</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 원소 빼기</span>
+</span></span><span class=line><span class=cl><span class=n>l</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 튜플. 불변임</span>
+</span></span><span class=line><span class=cl><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 딕셔너리. (3.6부터는 ordered)</span>
+</span></span><span class=line><span class=cl><span class=c1># 키는 불변, 값은 가변.</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;a&#39;</span><span class=p>:</span> <span class=mi>1</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 업데이트</span>
+</span></span><span class=line><span class=cl><span class=n>a</span><span class=p>[</span><span class=s1>&#39;a&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>new_value</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 키가 있는지는 key in dict</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=s1>&#39;a&#39;</span> <span class=ow>in</span> <span class=n>d</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>	<span class=n>do_something</span><span class=p>(</span><span class=n>d</span><span class=p>[</span><span class=s1>&#39;a&#39;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># collections 모듈에 있는 것</span>
+</span></span><span class=line><span class=cl><span class=c1># - deque</span>
+</span></span><span class=line><span class=cl><span class=c1># - Counter</span>
+</span></span><span class=line><span class=cl><span class=c1># - OrderedDict</span>
+</span></span><span class=line><span class=cl><span class=c1># - namedtuple</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#익명함수><h2 id=익명함수><span class=hanchor arialabel=Anchor># </span>익명함수</h2></a><p>람다라고 있긴 한데 권장하지 아니함.</p><a href=#복사><h3 id=복사><span class=hanchor arialabel=Anchor># </span>복사</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># 그냥 대입하면 복사되지 않는다.</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=n>a</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=ow>is</span> <span class=n>b</span> <span class=c1># =&gt; True</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># `copy`로 얕은 복사</span>
+</span></span><span class=line><span class=cl><span class=c1># 얕은 복사라서 </span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=p>{</span><span class=mi>1</span><span class=p>:</span> <span class=p>[</span><span class=mi>1</span><span class=p>]}</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=n>a</span><span class=o>.</span><span class=n>copy</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=ow>is</span> <span class=n>b</span> <span class=c1># =&gt; False</span>
+</span></span><span class=line><span class=cl><span class=n>a</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=ow>is</span> <span class=n>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=c1># =&gt; True</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># `copy.deepcopy()`로 깊은 복사</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>copy</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=p>{</span><span class=mi>1</span><span class=p>:</span> <span class=p>[</span><span class=mi>1</span><span class=p>]}</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=n>copy</span><span class=o>.</span><span class=n>deepcopy</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=ow>is</span> <span class=n>b</span> <span class=c1># =&gt; False</span>
+</span></span><span class=line><span class=cl><span class=n>a</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=ow>is</span> <span class=n>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=c1># =&gt; False</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#클래스><h2 id=클래스><span class=hanchor arialabel=Anchor># </span>클래스</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># class로 클래스 만들 수 있음</span>
+</span></span><span class=line><span class=cl><span class=c1># 상속하려면 인자로 상속 객체를 넘김.</span>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>Node</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=c1># 생성자는 `__init__(self)`로 정의함</span>
+</span></span><span class=line><span class=cl>	<span class=c1># 호출은 `Node()`</span>
+</span></span><span class=line><span class=cl>	<span class=c1># self를 명시적으로 넘기는 게 특이함.</span>
+</span></span><span class=line><span class=cl>	<span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>		<span class=bp>self</span><span class=o>.</span><span class=n>어쩌구</span><span class=o>=</span><span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=c1># 그 외의 특수한 예약 함수. magic matehod라고 함.</span>
+</span></span><span class=line><span class=cl>	<span class=c1># __str__, __add__, __eq__, __main__</span>
+</span></span><span class=line><span class=cl>	<span class=c1># __str__은 str로 포맷할 내용을 정의.</span>
+</span></span><span class=line><span class=cl>	<span class=c1># __add__는 `+`에 대응하는 동작.</span>
+</span></span><span class=line><span class=cl>	<span class=k>def</span> <span class=fm>__str__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=s2>&#34;str&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#이터-툴><h2 id=이터-툴><span class=hanchor arialabel=Anchor># </span>이터 툴</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># itertools에서 불러와야함</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>itertools</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># groupby</span>
+</span></span><span class=line><span class=cl><span class=n>itertools</span><span class=o>.</span><span class=n>groupby</span><span class=p>(</span><span class=n>data</span><span class=p>,</span> <span class=n>key</span><span class=o>=</span><span class=n>keyfunc</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># reduce는 functools에 따로 있음</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>functools</span> <span class=kn>import</span> <span class=n>reduce</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#모듈><h2 id=모듈><span class=hanchor arialabel=Anchor># </span>모듈</h2></a><ul><li><code>import X</code>: 파일을 모두 메모리에 불러오기</li><li><code>import X as X'</code>: alias</li><li><code>from X import Y</code>: 특정 함수, 클래스만 호출하기</li><li><code>from X import *</code>: 모든 함수, 클래스를 호출하기</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># some_file.py</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>some_function</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=s1>&#39;something&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># 다른 파일에서 불러오기</span>
+</span></span><span class=line><span class=cl><span class=c1># 기본적으로 같은 디렉토리에 있어야</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>some_file</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 모듈 속 모듈 불러오기</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>some_module.sub_module</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 상대경로 사용하기</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>..some_module</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 모듈.함수</span>
+</span></span><span class=line><span class=cl><span class=n>some_file</span><span class=o>.</span><span class=n>some_function</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>디렉토리로 분리하려면 <code>__init__.py</code>를 엔트리 포인트로 쓰면 됨.
+없어도 패키지로 인식은 함.</p><a href=#init><h3 id=init><span class=hanchor arialabel=Anchor># </span>init</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># __init__.py</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 서브 모듈에 대한 정의</span>
+</span></span><span class=line><span class=cl><span class=n>__all__</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;module1&#34;</span><span class=p>,</span> <span class=s2>&#34;module2&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 불러오기</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>.</span> <span class=kn>import</span> <span class=n>module1</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>.</span> <span class=kn>import</span> <span class=n>module2</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#main><h3 id=main><span class=hanchor arialabel=Anchor># </span>main</h3></a><p>패키지에 대한 엔트리 포인트</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># __main__.py</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>	<span class=n>do_something</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#built-in-module><h3 id=built-in-module><span class=hanchor arialabel=Anchor># </span>built-in module</h3></a><ul><li><code>random</code></li><li><code>time</code></li><li><code>urllib</code></li></ul></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>Backlinks</h3><ul class=backlinks><li>No backlinks found</li></ul></div><div><script src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>Interactive Graph</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://annyeong.me/js/graph.abd4bc2af3869a96524d7d23b76152c7.js></script></div></div><div id=contact_buttons><footer><p>Made by An Nyeong using <a href=https://github.com/jackyzha0/quartz>Quartz</a>, © 2023</p><ul><li><a href=https://annyeong.me/>Home</a></li><li><a href=https://misskey.dev/@annyeong>연합우주</a></li><li><a href=https://github.com/nyeong>Github</a></li></ul></footer></div></div></body></html>
