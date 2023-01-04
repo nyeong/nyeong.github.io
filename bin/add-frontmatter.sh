@@ -49,18 +49,20 @@ remove_empty() {
 
 while read file
 do
-  if grep -q '^---$' "$file"; then
-    if ! grep -q '^title:' "$file"; then
-      # has frontmatter but no title
-      add_title_to "$file"
-    # else
-      # has frontmatter and title
-    fi
-  else
-    if [[ -z $(grep '[^[:space:]]' "$file") ]]; then
-      remove_empty "$file"
+  if [ -f "$file" ]; then
+    if grep -q '^---$' "$file"; then
+      if ! grep -q '^title:' "$file"; then
+        # has frontmatter but no title
+        add_title_to "$file"
+      # else
+        # has frontmatter and title
+      fi
     else
-      create_frontmatter_at "$file"
+      if [[ -z $(grep '[^[:space:]]' "$file") ]]; then
+        remove_empty "$file"
+      else
+        create_frontmatter_at "$file"
+      fi
     fi
   fi
 done
