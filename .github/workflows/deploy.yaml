@@ -23,7 +23,8 @@ jobs:
           repository: nyeong/hanassig
           path: content
 
-      - run: cp -r content-prepared/* content/
+      # - run: cp -r content-prepared/* content/
+      - run: mv content/index.md content/_index.md
       - run: mkdir -p assets/indices
 
       - uses: actions/setup-ruby@v1
