@@ -1,0 +1,193 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/_next/static/chunks/webpack-8fa1640cc84ba8fe.js" defer=""></script><script src="/_next/static/chunks/framework-2c79e2a64abdb08b.js" defer=""></script><script src="/_next/static/chunks/main-4dcb7f9b52833aba.js" defer=""></script><script src="/_next/static/chunks/pages/_app-aea6920bd27938ca.js" defer=""></script><script src="/_next/static/chunks/664-8af8765c6fed5950.js" defer=""></script><script src="/_next/static/chunks/pages/n/%5B%5B...slug%5D%5D-bdd4a78633ed557a.js" defer=""></script><script src="/_next/static/GlTOjBOhO6xWONgruXGi2/_buildManifest.js" defer=""></script><script src="/_next/static/GlTOjBOhO6xWONgruXGi2/_ssgManifest.js" defer=""></script></head><body><div id="__next"><nav><div><a href="/">하나씩</a></div><div><a href="/n">index</a><a href="/tags">주제별</a></div></nav><div><main><article><header><h1>스칼라</h1></header><h2>왜</h2>
+<ul>
+<li>JVM 언어를 써 본 적 없어서</li>
+<li>강타입 구조적 언어를 써보려고</li>
+<li>데이터를 다룰 때 주로 거론되기에</li>
+<li>다른 언어에서 좋게 썼던 기능들이 있기에<!-- -->
+<ul>
+<li>루비와 뭔가 비슷함<!-- -->
+<ul>
+<li>엘릭서처럼 액터 모델이 주류임 (akka)</li>
+<li>러스트처럼 함수적 데이터 모델링이 가능</li>
+<li>하스켈처럼 타입 시스템이 있긴 함</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>도구와 생태계</h2>
+<p>https://docs.scala-lang.org/getting-started/index.html</p>
+<p><code>coursier</code>라는 읽기 힘든 이름의 도구를 사용한다.
+JRE가 필요한데, 스칼라 버전에 따라 호환되는 JVM 버전이 정해져있다.</p>
+<ul>
+<li><code>coursier</code>: 버전 관리자</li>
+<li><code>scalac</code>: 컴파일러</li>
+<li><code>scala</code>: REPL (정적 컴파일 언어인데도 REPL을 지원한다)</li>
+<li><code>sbt</code>: 빌드 도구</li>
+<li><code>scalafmt</code>: 코드 포맷터</li>
+</ul>
+<p>2.x 버전과 3.x 버전이 있는데, 대부분의 코딩 저지 사이트와 책에서
+2.x 버전만 다루고 있어서 2.x 설치</p>
+<pre><code class="language-bash">$ asdf install java openjdk-17.0.2
+$ cs install scala:2.13.10 scalac:2.13.10
+</code></pre>
+<ul>
+<li><a href="https://www.scala-lang.org/api/current/">스칼라 표준 라이브러리</a></li>
+</ul>
+<h2>타이핑 모델</h2>
+<p>정적이고 강타입이고 명목적이며 대부분의 값들이 객체이다.</p>
+<pre><code class="language-scala">if (Nil) println(&quot;true&quot;)
+error: type mismatch;
+found   : collection.immutable.Nil.type
+required: Boolean
+</code></pre>
+<ul>
+<li>스칼라, 러스트: 참/거짓 판별은 오직 Bool만 가능함</li>
+<li>루비, 엘릭서: <code>nil</code>, <code>false</code>는 <code>false</code>로 평가되고 나머지는 <code>true</code>임</li>
+<li>C, 파이썬: 맥락에 따라 <code>false</code>로 평가되는 값이 있음 (<code>0</code>, <code>null</code>, <code>[]</code> 등)</li>
+</ul>
+<p>루비와 비슷하게 기본 자료형도 객체이고, 기본 연산자도 메소드다.<a href="https://www.scala-lang.org/api/current/scala/Int.html">^1</a></p>
+<p>다만 기본 자료형이 <code>abstract</code>로 선언되어있고 세부 구현이 숨겨져 있는 것을 보면
+아마 컴파일 단계에서는 원시타입으로 바뀌는 것 같다.</p>
+<pre><code class="language-scala">// 1 + 1이라는 건
+1 + 1
+
+// 1이라는 Int 클래스의 인스턴스가 1을 인자로 `+`라는 메소드를 호출하는 것
+1.+(1)
+</code></pre>
+<pre><code class="language-ruby"># 루비도 기본 자료형이 객체이고 +, - 등 연산자도 메소드이다.
+3.class
+# =&gt; Integer
+3.methods.include? :+
+# =&gt; true
+</code></pre>
+<p>재밌게도 <code>def +(x: String): String</code>, 그러니까 <code>Int</code>와 <code>String</code>의 합연산이
+정의되어 있어 보기처럼 작동은 하는데, 이 메소드는 2.13.0부터 deprecated 됐다.
+그런데 반대로 <code>String</code>에서 <code>Int</code>를 더하는 연산은 deprecated 되지 않았는데,
+<code>java.lang.String</code>을 쓰기 때문인 것 같다.</p>
+<p><code>java.lang</code> 아래의 모듈들은 자동으로 import한다. <code>String</code>도 사실은
+<code>java.lang.String</code>이다.</p>
+<pre><code class="language-scala">3 + &quot;.14&quot;
+val res: String = &quot;3.14&quot;
+
+&quot;4&quot; + 2
+val res: String = &quot;42&quot;
+</code></pre>
+<p><code>Int + String</code>이 s-보간법 때문에 deprecated 되는 것 같은데, 같은 이유라면
+항의 순서가 뒤바뀐 <code>String + Int</code>도 deprecated 되어야 하겠지만 JVM에 귀속된
+메소드라 유지되는 것 같다.</p>
+<p>루비의 중위 연산자는 특수한 경우이고 별도로 선언이 불가능하다.
+엘릭서에서는 선언은 가능하나, 컴파일러가 인식할 수 있는 연산자가 정해져
+있다.<a href="https://hexdocs.pm/elixir/1.14.3/operators.html#defining-custom-operators">^2</a></p>
+<p>그에 비해 스칼라는 중위 연산자 자체가 문법 설탕이라 아래의 짓거리가 가능하다.</p>
+<pre><code class="language-scala">case class MyBool(x: Boolean) {
+	def and(that: MyBool): MyBool = if (x) that else this
+}
+
+// 보통은 이렇게 쓰겠지만
+MyBool(true).and(MyBool(true))
+
+// 이렇게 써도 알아먹는다
+MyBool(true) and MyBool(true)
+</code></pre>
+<p>변수 선언은 <code>val</code> 혹은 <code>var</code>로 가능하다. <code>val</code>은 불변 변수이고 <code>var</code>은 가변
+변수이다. 타입은 <code>: Type</code> 구문으로 명시하고, 유추 가능하면 생략할 수 있다.</p>
+<pre><code class="language-scala">val value = 4
+var variable = 4
+</code></pre>
+<p>다행히 재할당(혹은 가리기(<em>shadowing</em>))이 가능하다. <code>val</code>로 같은 이름을 여러번
+선언할 수 있다. 자바스크립트는 <code>const</code>로 선언하면 이게 안 되어서 불편하다.</p>
+<pre><code class="language-scala">val value = 3
+val value = doSomethingWith(value)
+</code></pre>
+<pre><code class="language-js">const value = 10
+const value = doSomethingWith(value)
+// Uncaught SyntaxError: Identifier &#x27;value&#x27; has already been declared
+</code></pre>
+<p>불변과 가변 선언을 갈라놓은 언어들은 함정이 있다. 불변의 의미가 두가지이기
+때문이다.</p>
+<ol>
+<li>객체의 재할당이 불가능하다</li>
+<li>객체의 재할당도 불가능하고 객체 값의 변경도 불가능하다</li>
+</ol>
+<p>1번인 언어들은 객체가 같음은 보장되지만, 객체가 불변임은 보장되지 않는다.
+값의 불변성을 위해서는 <code>freeze</code> 처리를 따로 해주어야 한다.</p>
+<pre><code class="language-js">const config = { url: &#x27;https://example.com&#x27; }
+
+// config와 Object 사이의 할당 관계 자체는 변하지 않았다.
+config.url = &#x27;https://bad-url.com&#x27;
+
+// 이렇게 해야 불변성이 보장된다.
+Object.freeze(config)
+</code></pre>
+<p>2번인 언어는 불변으로 선언만 하면 어떤 변수가 가리키는 대상이 바뀌지 않고,
+대상 자체의 값도 변하지 않는 것이 보장된다.</p>
+<pre><code class="language-rust">let map = HashMap::new();
+// 아래의 코드는 컴파일이 안된다.
+// `insert` 메소드는 `(&amp;mut HashMap&lt;K, V&gt;, K, V) -&gt; Option&lt;V&gt;` 타입이고,
+// `map`은 `mut`가 아니기 때문에 `&amp;mut`로 빌릴 수가 없다.
+map.insert(37, &quot;a&quot;);
+</code></pre>
+<p>스칼라는 1번인 언어이다. 대신 가변 자료구조와 불변 자료구조를 구분하여 이를
+타입으로 명시했다.
+가변 자료구조로 선언하면 <code>val</code>로 선언하더라도 불변이 보장되지 않는다.</p>
+<pre><code class="language-scala">val arr = Array(1, 2)
+
+// 업데이트가 가능하다.
+arr.update(0, 42)
+</code></pre>
+<pre><code class="language-scala">// 이렇게는 가능하다.
+// arr이 가리키고 있던 List가 갖고 있는 값이 바뀐 것이 아니라
+// arr에 업데이트된 List가 재할당된다
+var arr = List(1, 2)
+arr.updated(0, 42)
+
+// 이렇게는 재귀적인 값 참고라고 불가능하다
+val arr = List(1, 2)
+val arr = arr.updated(0, 42)
+</code></pre>
+<h2>자료구조</h2>
+<p>LISP 계열의 구조적 타이핑 언어들은 표준 자료구조 몇 개를 열심히 돌려써먹는다.
+따라서 자료구조의 리터럴 표현도 간략하고 특징적이다.</p>
+<pre><code class="language-elixir">tuple = {1, 2}
+list = [1, 2]
+tuple_in_list = [a: 2, b: 4]
+map = %{:a =&gt; 2, :b =&gt; 4}
+function = fn x -&gt; x end
+custom_type = %CustomType{field: value}
+</code></pre>
+<p>스칼라는 반대로 대부분의 자료구조는 리터럴이 없고 열심히 타입을 명시해야한다.
+대신 자료구조가 풍부하며 리터럴이 일관적이다.</p>
+<p>위에서 얘기한 대로 가변 자료구조와 불변 자료구조를 구별하기도 한다.</p>
+<pre><code class="language-scala">val tuple: (String, Int) = (&quot;localhost&quot;, 80)
+val list: List[Int] = List(1, 2, 3, 4, 5)
+val array: Array[Int] = Array(1, 2, 3, 4, 5)
+val set: Set[Int](1, 2, 3, 4, 5)
+val map: scala.collection.immutable.Map[String,Int] = Map(&quot;a&quot; -&gt; 1)
+val function: Any =&gt; Any = (x: Any) =&gt; x
+</code></pre>
+<h3>List</h3>
+<p>랜덤 엑서스가 가능하고, 동종 자료만 담을 수 있고, 순서가 보장되며 불변이다.</p>
+<pre><code class="language-scala">val l = List(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;)
+</code></pre>
+<p>동종 자료만 담을 수 있다.
+서로 다른 자료형을 담고자 하는 경우, 이에 대한 타입을 새로 선언하거나 <code>Any</code>를
+써야한다. 스칼라 3에서는 합타입을 지원하므로 편하게 합타입으로 처리하면 된다.</p>
+<pre><code class="language-scala">val l: List[Any] = List(&quot;one&quot;, &quot;two&quot;, 3)
+
+// 스칼라 3의 경우
+val l: List[String | Int] = List(&quot;one&quot;, &quot;two&quot;, 3)
+</code></pre>
+<h3>Set</h3>
+<p>순서가 보장되지 않으며 불변이다.</p>
+<h3>Range</h3>
+<pre><code class="language-scala">val res: scala.collection.immutable.Range.Inclusive = 1 to 10
+val res: scala.collection.immutable.Range = 1 until 10
+</code></pre>
+<h2>제어구조</h2>
+<p>제어구조의 조건문에는 <code>Boolean</code> 타입만 들어갈 수 있다.</p>
+<ul>
+<li><code>while</code></li>
+<li><code>for</code></li>
+<li><code>foreach[U](f: (T) =&gt; U): Unit</code></li>
+</ul></article></main></div><footer><ul><li><a href="https://github.com/nyeong/hanassig">Repo</a></li><li>안녕 ©️ <a href="https://github.com/nyeong/hanassig/blob/main/LICENSE">CC BY-SA</a></li></ul></footer></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"note":{"title":"스칼라","description":"스칼라 프로그래밍 언어","date":"2023-03-10T00:00:00.000Z","tags":null,"body":{"raw":"\n## 왜\n\n- JVM 언어를 써 본 적 없어서\n- 강타입 구조적 언어를 써보려고\n- 데이터를 다룰 때 주로 거론되기에\n- 다른 언어에서 좋게 썼던 기능들이 있기에\n  - 루비와 뭔가 비슷함\n\t- 엘릭서처럼 액터 모델이 주류임 (akka)\n\t- 러스트처럼 함수적 데이터 모델링이 가능\n\t- 하스켈처럼 타입 시스템이 있긴 함\n\n## 도구와 생태계\n\nhttps://docs.scala-lang.org/getting-started/index.html\n\n`coursier`라는 읽기 힘든 이름의 도구를 사용한다.\nJRE가 필요한데, 스칼라 버전에 따라 호환되는 JVM 버전이 정해져있다.\n\n- `coursier`: 버전 관리자\n- `scalac`: 컴파일러\n- `scala`: REPL (정적 컴파일 언어인데도 REPL을 지원한다)\n- `sbt`: 빌드 도구\n- `scalafmt`: 코드 포맷터\n\n2.x 버전과 3.x 버전이 있는데, 대부분의 코딩 저지 사이트와 책에서\n2.x 버전만 다루고 있어서 2.x 설치\n\n```bash\n$ asdf install java openjdk-17.0.2\n$ cs install scala:2.13.10 scalac:2.13.10\n```\n\n- [스칼라 표준 라이브러리](https://www.scala-lang.org/api/current/)\n\n## 타이핑 모델\n\n정적이고 강타입이고 명목적이며 대부분의 값들이 객체이다.\n\n```scala\nif (Nil) println(\"true\")\nerror: type mismatch;\nfound   : collection.immutable.Nil.type\nrequired: Boolean\n```\n\n- 스칼라, 러스트: 참/거짓 판별은 오직 Bool만 가능함\n- 루비, 엘릭서: `nil`, `false`는 `false`로 평가되고 나머지는 `true`임\n- C, 파이썬: 맥락에 따라 `false`로 평가되는 값이 있음 (`0`, `null`, `[]` 등)\n\n루비와 비슷하게 기본 자료형도 객체이고, 기본 연산자도 메소드다.[^1]\n\n[^1]: https://www.scala-lang.org/api/current/scala/Int.html\n\n다만 기본 자료형이 `abstract`로 선언되어있고 세부 구현이 숨겨져 있는 것을 보면\n아마 컴파일 단계에서는 원시타입으로 바뀌는 것 같다.\n\n\n```scala\n// 1 + 1이라는 건\n1 + 1\n\n// 1이라는 Int 클래스의 인스턴스가 1을 인자로 `+`라는 메소드를 호출하는 것\n1.+(1)\n```\n\n```ruby\n# 루비도 기본 자료형이 객체이고 +, - 등 연산자도 메소드이다.\n3.class\n# =\u003e Integer\n3.methods.include? :+\n# =\u003e true\n```\n\n재밌게도 `def +(x: String): String`, 그러니까 `Int`와 `String`의 합연산이\n정의되어 있어 보기처럼 작동은 하는데, 이 메소드는 2.13.0부터 deprecated 됐다.\n그런데 반대로 `String`에서 `Int`를 더하는 연산은 deprecated 되지 않았는데,\n`java.lang.String`을 쓰기 때문인 것 같다.\n\n`java.lang` 아래의 모듈들은 자동으로 import한다. `String`도 사실은\n`java.lang.String`이다.\n\n```scala\n3 + \".14\"\nval res: String = \"3.14\"\n\n\"4\" + 2\nval res: String = \"42\"\n```\n\n`Int + String`이 s-보간법 때문에 deprecated 되는 것 같은데, 같은 이유라면\n항의 순서가 뒤바뀐 `String + Int`도 deprecated 되어야 하겠지만 JVM에 귀속된\n메소드라 유지되는 것 같다.\n\n루비의 중위 연산자는 특수한 경우이고 별도로 선언이 불가능하다.\n엘릭서에서는 선언은 가능하나, 컴파일러가 인식할 수 있는 연산자가 정해져\n있다.[^2]\n\n[^2]: https://hexdocs.pm/elixir/1.14.3/operators.html#defining-custom-operators\n\n그에 비해 스칼라는 중위 연산자 자체가 문법 설탕이라 아래의 짓거리가 가능하다.\n\n```scala\ncase class MyBool(x: Boolean) {\n\tdef and(that: MyBool): MyBool = if (x) that else this\n}\n\n// 보통은 이렇게 쓰겠지만\nMyBool(true).and(MyBool(true))\n\n// 이렇게 써도 알아먹는다\nMyBool(true) and MyBool(true)\n```\n\n변수 선언은 `val` 혹은 `var`로 가능하다. `val`은 불변 변수이고 `var`은 가변\n변수이다. 타입은 `: Type` 구문으로 명시하고, 유추 가능하면 생략할 수 있다.\n\n```scala\nval value = 4\nvar variable = 4\n```\n\n다행히 재할당(혹은 가리기(*shadowing*))이 가능하다. `val`로 같은 이름을 여러번\n선언할 수 있다. 자바스크립트는 `const`로 선언하면 이게 안 되어서 불편하다.\n\n```scala\nval value = 3\nval value = doSomethingWith(value)\n```\n\n```js\nconst value = 10\nconst value = doSomethingWith(value)\n// Uncaught SyntaxError: Identifier 'value' has already been declared\n```\n\n불변과 가변 선언을 갈라놓은 언어들은 함정이 있다. 불변의 의미가 두가지이기\n때문이다.\n\n1. 객체의 재할당이 불가능하다\n2. 객체의 재할당도 불가능하고 객체 값의 변경도 불가능하다\n\n1번인 언어들은 객체가 같음은 보장되지만, 객체가 불변임은 보장되지 않는다.\n값의 불변성을 위해서는 `freeze` 처리를 따로 해주어야 한다.\n\n```js\nconst config = { url: 'https://example.com' }\n\n// config와 Object 사이의 할당 관계 자체는 변하지 않았다.\nconfig.url = 'https://bad-url.com'\n\n// 이렇게 해야 불변성이 보장된다.\nObject.freeze(config)\n```\n\n2번인 언어는 불변으로 선언만 하면 어떤 변수가 가리키는 대상이 바뀌지 않고,\n대상 자체의 값도 변하지 않는 것이 보장된다.\n\n```rust\nlet map = HashMap::new();\n// 아래의 코드는 컴파일이 안된다.\n// `insert` 메소드는 `(\u0026mut HashMap\u003cK, V\u003e, K, V) -\u003e Option\u003cV\u003e` 타입이고,\n// `map`은 `mut`가 아니기 때문에 `\u0026mut`로 빌릴 수가 없다.\nmap.insert(37, \"a\");\n```\n\n스칼라는 1번인 언어이다. 대신 가변 자료구조와 불변 자료구조를 구분하여 이를\n타입으로 명시했다.\n가변 자료구조로 선언하면 `val`로 선언하더라도 불변이 보장되지 않는다.\n\n```scala\nval arr = Array(1, 2)\n\n// 업데이트가 가능하다.\narr.update(0, 42)\n```\n\n```scala\n// 이렇게는 가능하다.\n// arr이 가리키고 있던 List가 갖고 있는 값이 바뀐 것이 아니라\n// arr에 업데이트된 List가 재할당된다\nvar arr = List(1, 2)\narr.updated(0, 42)\n\n// 이렇게는 재귀적인 값 참고라고 불가능하다\nval arr = List(1, 2)\nval arr = arr.updated(0, 42)\n```\n\n## 자료구조\n\nLISP 계열의 구조적 타이핑 언어들은 표준 자료구조 몇 개를 열심히 돌려써먹는다.\n따라서 자료구조의 리터럴 표현도 간략하고 특징적이다.\n\n```elixir\ntuple = {1, 2}\nlist = [1, 2]\ntuple_in_list = [a: 2, b: 4]\nmap = %{:a =\u003e 2, :b =\u003e 4}\nfunction = fn x -\u003e x end\ncustom_type = %CustomType{field: value}\n```\n\n스칼라는 반대로 대부분의 자료구조는 리터럴이 없고 열심히 타입을 명시해야한다.\n대신 자료구조가 풍부하며 리터럴이 일관적이다.\n\n위에서 얘기한 대로 가변 자료구조와 불변 자료구조를 구별하기도 한다.\n\n```scala\nval tuple: (String, Int) = (\"localhost\", 80)\nval list: List[Int] = List(1, 2, 3, 4, 5)\nval array: Array[Int] = Array(1, 2, 3, 4, 5)\nval set: Set[Int](1, 2, 3, 4, 5)\nval map: scala.collection.immutable.Map[String,Int] = Map(\"a\" -\u003e 1)\nval function: Any =\u003e Any = (x: Any) =\u003e x\n```\n\n### List\n\n랜덤 엑서스가 가능하고, 동종 자료만 담을 수 있고, 순서가 보장되며 불변이다.\n\n```scala\nval l = List(\"one\", \"two\", \"three\")\n```\n\n동종 자료만 담을 수 있다.\n서로 다른 자료형을 담고자 하는 경우, 이에 대한 타입을 새로 선언하거나 `Any`를\n써야한다. 스칼라 3에서는 합타입을 지원하므로 편하게 합타입으로 처리하면 된다.\n\n```scala\nval l: List[Any] = List(\"one\", \"two\", 3)\n\n// 스칼라 3의 경우\nval l: List[String | Int] = List(\"one\", \"two\", 3)\n```\n\n### Set\n\n순서가 보장되지 않으며 불변이다.\n\n### Range\n\n```scala\nval res: scala.collection.immutable.Range.Inclusive = 1 to 10\nval res: scala.collection.immutable.Range = 1 until 10\n```\n\n## 제어구조\n\n제어구조의 조건문에는 `Boolean` 타입만 들어갈 수 있다.\n\n- `while`\n- `for`\n- `foreach[U](f: (T) =\u003e U): Unit`\n\n","code":"var Component=(()=\u003e{var s=Object.create;var a=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var u=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,m=Object.prototype.hasOwnProperty;var v=(l,n)=\u003e()=\u003e(n||l((n={exports:{}}).exports,n),n.exports),f=(l,n)=\u003e{for(var c in n)a(l,c,{get:n[c],enumerable:!0})},d=(l,n,c,i)=\u003e{if(n\u0026\u0026typeof n==\"object\"||typeof n==\"function\")for(let r of u(n))!m.call(l,r)\u0026\u0026r!==c\u0026\u0026a(l,r,{get:()=\u003en[r],enumerable:!(i=p(n,r))||i.enumerable});return l};var x=(l,n,c)=\u003e(c=l!=null?s(g(l)):{},d(n||!l||!l.__esModule?a(c,\"default\",{value:l,enumerable:!0}):c,l)),y=l=\u003ed(a({},\"__esModule\",{value:!0}),l);var t=v((I,h)=\u003e{h.exports=_jsx_runtime});var M={};f(M,{default:()=\u003eb,frontmatter:()=\u003eN});var e=x(t()),N={title:\"\\uC2A4\\uCE7C\\uB77C\",description:\"\\uC2A4\\uCE7C\\uB77C \\uD504\\uB85C\\uADF8\\uB798\\uBC0D \\uC5B8\\uC5B4\",date:new Date(16784064e5),tags:null};function o(l){let n=Object.assign({h2:\"h2\",ul:\"ul\",li:\"li\",p:\"p\",code:\"code\",pre:\"pre\",a:\"a\",em:\"em\",ol:\"ol\",h3:\"h3\"},l.components);return(0,e.jsxs)(e.Fragment,{children:[(0,e.jsx)(n.h2,{children:\"\\uC65C\"}),`\n`,(0,e.jsxs)(n.ul,{children:[`\n`,(0,e.jsx)(n.li,{children:\"JVM \\uC5B8\\uC5B4\\uB97C \\uC368 \\uBCF8 \\uC801 \\uC5C6\\uC5B4\\uC11C\"}),`\n`,(0,e.jsx)(n.li,{children:\"\\uAC15\\uD0C0\\uC785 \\uAD6C\\uC870\\uC801 \\uC5B8\\uC5B4\\uB97C \\uC368\\uBCF4\\uB824\\uACE0\"}),`\n`,(0,e.jsx)(n.li,{children:\"\\uB370\\uC774\\uD130\\uB97C \\uB2E4\\uB8F0 \\uB54C \\uC8FC\\uB85C \\uAC70\\uB860\\uB418\\uAE30\\uC5D0\"}),`\n`,(0,e.jsxs)(n.li,{children:[\"\\uB2E4\\uB978 \\uC5B8\\uC5B4\\uC5D0\\uC11C \\uC88B\\uAC8C \\uC37C\\uB358 \\uAE30\\uB2A5\\uB4E4\\uC774 \\uC788\\uAE30\\uC5D0\",`\n`,(0,e.jsxs)(n.ul,{children:[`\n`,(0,e.jsxs)(n.li,{children:[\"\\uB8E8\\uBE44\\uC640 \\uBB54\\uAC00 \\uBE44\\uC2B7\\uD568\",`\n`,(0,e.jsxs)(n.ul,{children:[`\n`,(0,e.jsx)(n.li,{children:\"\\uC5D8\\uB9AD\\uC11C\\uCC98\\uB7FC \\uC561\\uD130 \\uBAA8\\uB378\\uC774 \\uC8FC\\uB958\\uC784 (akka)\"}),`\n`,(0,e.jsx)(n.li,{children:\"\\uB7EC\\uC2A4\\uD2B8\\uCC98\\uB7FC \\uD568\\uC218\\uC801 \\uB370\\uC774\\uD130 \\uBAA8\\uB378\\uB9C1\\uC774 \\uAC00\\uB2A5\"}),`\n`,(0,e.jsx)(n.li,{children:\"\\uD558\\uC2A4\\uCF08\\uCC98\\uB7FC \\uD0C0\\uC785 \\uC2DC\\uC2A4\\uD15C\\uC774 \\uC788\\uAE34 \\uD568\"}),`\n`]}),`\n`]}),`\n`]}),`\n`]}),`\n`]}),`\n`,(0,e.jsx)(n.h2,{children:\"\\uB3C4\\uAD6C\\uC640 \\uC0DD\\uD0DC\\uACC4\"}),`\n`,(0,e.jsx)(n.p,{children:\"https://docs.scala-lang.org/getting-started/index.html\"}),`\n`,(0,e.jsxs)(n.p,{children:[(0,e.jsx)(n.code,{children:\"coursier\"}),`\\uB77C\\uB294 \\uC77D\\uAE30 \\uD798\\uB4E0 \\uC774\\uB984\\uC758 \\uB3C4\\uAD6C\\uB97C \\uC0AC\\uC6A9\\uD55C\\uB2E4.\nJRE\\uAC00 \\uD544\\uC694\\uD55C\\uB370, \\uC2A4\\uCE7C\\uB77C \\uBC84\\uC804\\uC5D0 \\uB530\\uB77C \\uD638\\uD658\\uB418\\uB294 JVM \\uBC84\\uC804\\uC774 \\uC815\\uD574\\uC838\\uC788\\uB2E4.`]}),`\n`,(0,e.jsxs)(n.ul,{children:[`\n`,(0,e.jsxs)(n.li,{children:[(0,e.jsx)(n.code,{children:\"coursier\"}),\": \\uBC84\\uC804 \\uAD00\\uB9AC\\uC790\"]}),`\n`,(0,e.jsxs)(n.li,{children:[(0,e.jsx)(n.code,{children:\"scalac\"}),\": \\uCEF4\\uD30C\\uC77C\\uB7EC\"]}),`\n`,(0,e.jsxs)(n.li,{children:[(0,e.jsx)(n.code,{children:\"scala\"}),\": REPL (\\uC815\\uC801 \\uCEF4\\uD30C\\uC77C \\uC5B8\\uC5B4\\uC778\\uB370\\uB3C4 REPL\\uC744 \\uC9C0\\uC6D0\\uD55C\\uB2E4)\"]}),`\n`,(0,e.jsxs)(n.li,{children:[(0,e.jsx)(n.code,{children:\"sbt\"}),\": \\uBE4C\\uB4DC \\uB3C4\\uAD6C\"]}),`\n`,(0,e.jsxs)(n.li,{children:[(0,e.jsx)(n.code,{children:\"scalafmt\"}),\": \\uCF54\\uB4DC \\uD3EC\\uB9F7\\uD130\"]}),`\n`]}),`\n`,(0,e.jsx)(n.p,{children:`2.x \\uBC84\\uC804\\uACFC 3.x \\uBC84\\uC804\\uC774 \\uC788\\uB294\\uB370, \\uB300\\uBD80\\uBD84\\uC758 \\uCF54\\uB529 \\uC800\\uC9C0 \\uC0AC\\uC774\\uD2B8\\uC640 \\uCC45\\uC5D0\\uC11C\n2.x \\uBC84\\uC804\\uB9CC \\uB2E4\\uB8E8\\uACE0 \\uC788\\uC5B4\\uC11C 2.x \\uC124\\uCE58`}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-bash\",children:`$ asdf install java openjdk-17.0.2\n$ cs install scala:2.13.10 scalac:2.13.10\n`})}),`\n`,(0,e.jsxs)(n.ul,{children:[`\n`,(0,e.jsx)(n.li,{children:(0,e.jsx)(n.a,{href:\"https://www.scala-lang.org/api/current/\",children:\"\\uC2A4\\uCE7C\\uB77C \\uD45C\\uC900 \\uB77C\\uC774\\uBE0C\\uB7EC\\uB9AC\"})}),`\n`]}),`\n`,(0,e.jsx)(n.h2,{children:\"\\uD0C0\\uC774\\uD551 \\uBAA8\\uB378\"}),`\n`,(0,e.jsx)(n.p,{children:\"\\uC815\\uC801\\uC774\\uACE0 \\uAC15\\uD0C0\\uC785\\uC774\\uACE0 \\uBA85\\uBAA9\\uC801\\uC774\\uBA70 \\uB300\\uBD80\\uBD84\\uC758 \\uAC12\\uB4E4\\uC774 \\uAC1D\\uCCB4\\uC774\\uB2E4.\"}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`if (Nil) println(\"true\")\nerror: type mismatch;\nfound   : collection.immutable.Nil.type\nrequired: Boolean\n`})}),`\n`,(0,e.jsxs)(n.ul,{children:[`\n`,(0,e.jsx)(n.li,{children:\"\\uC2A4\\uCE7C\\uB77C, \\uB7EC\\uC2A4\\uD2B8: \\uCC38/\\uAC70\\uC9D3 \\uD310\\uBCC4\\uC740 \\uC624\\uC9C1 Bool\\uB9CC \\uAC00\\uB2A5\\uD568\"}),`\n`,(0,e.jsxs)(n.li,{children:[\"\\uB8E8\\uBE44, \\uC5D8\\uB9AD\\uC11C: \",(0,e.jsx)(n.code,{children:\"nil\"}),\", \",(0,e.jsx)(n.code,{children:\"false\"}),\"\\uB294 \",(0,e.jsx)(n.code,{children:\"false\"}),\"\\uB85C \\uD3C9\\uAC00\\uB418\\uACE0 \\uB098\\uBA38\\uC9C0\\uB294 \",(0,e.jsx)(n.code,{children:\"true\"}),\"\\uC784\"]}),`\n`,(0,e.jsxs)(n.li,{children:[\"C, \\uD30C\\uC774\\uC36C: \\uB9E5\\uB77D\\uC5D0 \\uB530\\uB77C \",(0,e.jsx)(n.code,{children:\"false\"}),\"\\uB85C \\uD3C9\\uAC00\\uB418\\uB294 \\uAC12\\uC774 \\uC788\\uC74C (\",(0,e.jsx)(n.code,{children:\"0\"}),\", \",(0,e.jsx)(n.code,{children:\"null\"}),\", \",(0,e.jsx)(n.code,{children:\"[]\"}),\" \\uB4F1)\"]}),`\n`]}),`\n`,(0,e.jsxs)(n.p,{children:[\"\\uB8E8\\uBE44\\uC640 \\uBE44\\uC2B7\\uD558\\uAC8C \\uAE30\\uBCF8 \\uC790\\uB8CC\\uD615\\uB3C4 \\uAC1D\\uCCB4\\uC774\\uACE0, \\uAE30\\uBCF8 \\uC5F0\\uC0B0\\uC790\\uB3C4 \\uBA54\\uC18C\\uB4DC\\uB2E4.\",(0,e.jsx)(n.a,{href:\"https://www.scala-lang.org/api/current/scala/Int.html\",children:\"^1\"})]}),`\n`,(0,e.jsxs)(n.p,{children:[\"\\uB2E4\\uB9CC \\uAE30\\uBCF8 \\uC790\\uB8CC\\uD615\\uC774 \",(0,e.jsx)(n.code,{children:\"abstract\"}),`\\uB85C \\uC120\\uC5B8\\uB418\\uC5B4\\uC788\\uACE0 \\uC138\\uBD80 \\uAD6C\\uD604\\uC774 \\uC228\\uACA8\\uC838 \\uC788\\uB294 \\uAC83\\uC744 \\uBCF4\\uBA74\n\\uC544\\uB9C8 \\uCEF4\\uD30C\\uC77C \\uB2E8\\uACC4\\uC5D0\\uC11C\\uB294 \\uC6D0\\uC2DC\\uD0C0\\uC785\\uC73C\\uB85C \\uBC14\\uB00C\\uB294 \\uAC83 \\uAC19\\uB2E4.`]}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`// 1 + 1\\uC774\\uB77C\\uB294 \\uAC74\n1 + 1\n\n// 1\\uC774\\uB77C\\uB294 Int \\uD074\\uB798\\uC2A4\\uC758 \\uC778\\uC2A4\\uD134\\uC2A4\\uAC00 1\\uC744 \\uC778\\uC790\\uB85C \\`+\\`\\uB77C\\uB294 \\uBA54\\uC18C\\uB4DC\\uB97C \\uD638\\uCD9C\\uD558\\uB294 \\uAC83\n1.+(1)\n`})}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-ruby\",children:`# \\uB8E8\\uBE44\\uB3C4 \\uAE30\\uBCF8 \\uC790\\uB8CC\\uD615\\uC774 \\uAC1D\\uCCB4\\uC774\\uACE0 +, - \\uB4F1 \\uC5F0\\uC0B0\\uC790\\uB3C4 \\uBA54\\uC18C\\uB4DC\\uC774\\uB2E4.\n3.class\n# =\u003e Integer\n3.methods.include? :+\n# =\u003e true\n`})}),`\n`,(0,e.jsxs)(n.p,{children:[\"\\uC7AC\\uBC0C\\uAC8C\\uB3C4 \",(0,e.jsx)(n.code,{children:\"def +(x: String): String\"}),\", \\uADF8\\uB7EC\\uB2C8\\uAE4C \",(0,e.jsx)(n.code,{children:\"Int\"}),\"\\uC640 \",(0,e.jsx)(n.code,{children:\"String\"}),`\\uC758 \\uD569\\uC5F0\\uC0B0\\uC774\n\\uC815\\uC758\\uB418\\uC5B4 \\uC788\\uC5B4 \\uBCF4\\uAE30\\uCC98\\uB7FC \\uC791\\uB3D9\\uC740 \\uD558\\uB294\\uB370, \\uC774 \\uBA54\\uC18C\\uB4DC\\uB294 2.13.0\\uBD80\\uD130 deprecated \\uB410\\uB2E4.\n\\uADF8\\uB7F0\\uB370 \\uBC18\\uB300\\uB85C `,(0,e.jsx)(n.code,{children:\"String\"}),\"\\uC5D0\\uC11C \",(0,e.jsx)(n.code,{children:\"Int\"}),`\\uB97C \\uB354\\uD558\\uB294 \\uC5F0\\uC0B0\\uC740 deprecated \\uB418\\uC9C0 \\uC54A\\uC558\\uB294\\uB370,\n`,(0,e.jsx)(n.code,{children:\"java.lang.String\"}),\"\\uC744 \\uC4F0\\uAE30 \\uB54C\\uBB38\\uC778 \\uAC83 \\uAC19\\uB2E4.\"]}),`\n`,(0,e.jsxs)(n.p,{children:[(0,e.jsx)(n.code,{children:\"java.lang\"}),\" \\uC544\\uB798\\uC758 \\uBAA8\\uB4C8\\uB4E4\\uC740 \\uC790\\uB3D9\\uC73C\\uB85C import\\uD55C\\uB2E4. \",(0,e.jsx)(n.code,{children:\"String\"}),`\\uB3C4 \\uC0AC\\uC2E4\\uC740\n`,(0,e.jsx)(n.code,{children:\"java.lang.String\"}),\"\\uC774\\uB2E4.\"]}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`3 + \".14\"\nval res: String = \"3.14\"\n\n\"4\" + 2\nval res: String = \"42\"\n`})}),`\n`,(0,e.jsxs)(n.p,{children:[(0,e.jsx)(n.code,{children:\"Int + String\"}),`\\uC774 s-\\uBCF4\\uAC04\\uBC95 \\uB54C\\uBB38\\uC5D0 deprecated \\uB418\\uB294 \\uAC83 \\uAC19\\uC740\\uB370, \\uAC19\\uC740 \\uC774\\uC720\\uB77C\\uBA74\n\\uD56D\\uC758 \\uC21C\\uC11C\\uAC00 \\uB4A4\\uBC14\\uB010 `,(0,e.jsx)(n.code,{children:\"String + Int\"}),`\\uB3C4 deprecated \\uB418\\uC5B4\\uC57C \\uD558\\uACA0\\uC9C0\\uB9CC JVM\\uC5D0 \\uADC0\\uC18D\\uB41C\n\\uBA54\\uC18C\\uB4DC\\uB77C \\uC720\\uC9C0\\uB418\\uB294 \\uAC83 \\uAC19\\uB2E4.`]}),`\n`,(0,e.jsxs)(n.p,{children:[`\\uB8E8\\uBE44\\uC758 \\uC911\\uC704 \\uC5F0\\uC0B0\\uC790\\uB294 \\uD2B9\\uC218\\uD55C \\uACBD\\uC6B0\\uC774\\uACE0 \\uBCC4\\uB3C4\\uB85C \\uC120\\uC5B8\\uC774 \\uBD88\\uAC00\\uB2A5\\uD558\\uB2E4.\n\\uC5D8\\uB9AD\\uC11C\\uC5D0\\uC11C\\uB294 \\uC120\\uC5B8\\uC740 \\uAC00\\uB2A5\\uD558\\uB098, \\uCEF4\\uD30C\\uC77C\\uB7EC\\uAC00 \\uC778\\uC2DD\\uD560 \\uC218 \\uC788\\uB294 \\uC5F0\\uC0B0\\uC790\\uAC00 \\uC815\\uD574\\uC838\n\\uC788\\uB2E4.`,(0,e.jsx)(n.a,{href:\"https://hexdocs.pm/elixir/1.14.3/operators.html#defining-custom-operators\",children:\"^2\"})]}),`\n`,(0,e.jsx)(n.p,{children:\"\\uADF8\\uC5D0 \\uBE44\\uD574 \\uC2A4\\uCE7C\\uB77C\\uB294 \\uC911\\uC704 \\uC5F0\\uC0B0\\uC790 \\uC790\\uCCB4\\uAC00 \\uBB38\\uBC95 \\uC124\\uD0D5\\uC774\\uB77C \\uC544\\uB798\\uC758 \\uC9D3\\uAC70\\uB9AC\\uAC00 \\uAC00\\uB2A5\\uD558\\uB2E4.\"}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`case class MyBool(x: Boolean) {\n\tdef and(that: MyBool): MyBool = if (x) that else this\n}\n\n// \\uBCF4\\uD1B5\\uC740 \\uC774\\uB807\\uAC8C \\uC4F0\\uACA0\\uC9C0\\uB9CC\nMyBool(true).and(MyBool(true))\n\n// \\uC774\\uB807\\uAC8C \\uC368\\uB3C4 \\uC54C\\uC544\\uBA39\\uB294\\uB2E4\nMyBool(true) and MyBool(true)\n`})}),`\n`,(0,e.jsxs)(n.p,{children:[\"\\uBCC0\\uC218 \\uC120\\uC5B8\\uC740 \",(0,e.jsx)(n.code,{children:\"val\"}),\" \\uD639\\uC740 \",(0,e.jsx)(n.code,{children:\"var\"}),\"\\uB85C \\uAC00\\uB2A5\\uD558\\uB2E4. \",(0,e.jsx)(n.code,{children:\"val\"}),\"\\uC740 \\uBD88\\uBCC0 \\uBCC0\\uC218\\uC774\\uACE0 \",(0,e.jsx)(n.code,{children:\"var\"}),`\\uC740 \\uAC00\\uBCC0\n\\uBCC0\\uC218\\uC774\\uB2E4. \\uD0C0\\uC785\\uC740 `,(0,e.jsx)(n.code,{children:\": Type\"}),\" \\uAD6C\\uBB38\\uC73C\\uB85C \\uBA85\\uC2DC\\uD558\\uACE0, \\uC720\\uCD94 \\uAC00\\uB2A5\\uD558\\uBA74 \\uC0DD\\uB7B5\\uD560 \\uC218 \\uC788\\uB2E4.\"]}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`val value = 4\nvar variable = 4\n`})}),`\n`,(0,e.jsxs)(n.p,{children:[\"\\uB2E4\\uD589\\uD788 \\uC7AC\\uD560\\uB2F9(\\uD639\\uC740 \\uAC00\\uB9AC\\uAE30(\",(0,e.jsx)(n.em,{children:\"shadowing\"}),\"))\\uC774 \\uAC00\\uB2A5\\uD558\\uB2E4. \",(0,e.jsx)(n.code,{children:\"val\"}),`\\uB85C \\uAC19\\uC740 \\uC774\\uB984\\uC744 \\uC5EC\\uB7EC\\uBC88\n\\uC120\\uC5B8\\uD560 \\uC218 \\uC788\\uB2E4. \\uC790\\uBC14\\uC2A4\\uD06C\\uB9BD\\uD2B8\\uB294 `,(0,e.jsx)(n.code,{children:\"const\"}),\"\\uB85C \\uC120\\uC5B8\\uD558\\uBA74 \\uC774\\uAC8C \\uC548 \\uB418\\uC5B4\\uC11C \\uBD88\\uD3B8\\uD558\\uB2E4.\"]}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`val value = 3\nval value = doSomethingWith(value)\n`})}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-js\",children:`const value = 10\nconst value = doSomethingWith(value)\n// Uncaught SyntaxError: Identifier 'value' has already been declared\n`})}),`\n`,(0,e.jsx)(n.p,{children:`\\uBD88\\uBCC0\\uACFC \\uAC00\\uBCC0 \\uC120\\uC5B8\\uC744 \\uAC08\\uB77C\\uB193\\uC740 \\uC5B8\\uC5B4\\uB4E4\\uC740 \\uD568\\uC815\\uC774 \\uC788\\uB2E4. \\uBD88\\uBCC0\\uC758 \\uC758\\uBBF8\\uAC00 \\uB450\\uAC00\\uC9C0\\uC774\\uAE30\n\\uB54C\\uBB38\\uC774\\uB2E4.`}),`\n`,(0,e.jsxs)(n.ol,{children:[`\n`,(0,e.jsx)(n.li,{children:\"\\uAC1D\\uCCB4\\uC758 \\uC7AC\\uD560\\uB2F9\\uC774 \\uBD88\\uAC00\\uB2A5\\uD558\\uB2E4\"}),`\n`,(0,e.jsx)(n.li,{children:\"\\uAC1D\\uCCB4\\uC758 \\uC7AC\\uD560\\uB2F9\\uB3C4 \\uBD88\\uAC00\\uB2A5\\uD558\\uACE0 \\uAC1D\\uCCB4 \\uAC12\\uC758 \\uBCC0\\uACBD\\uB3C4 \\uBD88\\uAC00\\uB2A5\\uD558\\uB2E4\"}),`\n`]}),`\n`,(0,e.jsxs)(n.p,{children:[`1\\uBC88\\uC778 \\uC5B8\\uC5B4\\uB4E4\\uC740 \\uAC1D\\uCCB4\\uAC00 \\uAC19\\uC74C\\uC740 \\uBCF4\\uC7A5\\uB418\\uC9C0\\uB9CC, \\uAC1D\\uCCB4\\uAC00 \\uBD88\\uBCC0\\uC784\\uC740 \\uBCF4\\uC7A5\\uB418\\uC9C0 \\uC54A\\uB294\\uB2E4.\n\\uAC12\\uC758 \\uBD88\\uBCC0\\uC131\\uC744 \\uC704\\uD574\\uC11C\\uB294 `,(0,e.jsx)(n.code,{children:\"freeze\"}),\" \\uCC98\\uB9AC\\uB97C \\uB530\\uB85C \\uD574\\uC8FC\\uC5B4\\uC57C \\uD55C\\uB2E4.\"]}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-js\",children:`const config = { url: 'https://example.com' }\n\n// config\\uC640 Object \\uC0AC\\uC774\\uC758 \\uD560\\uB2F9 \\uAD00\\uACC4 \\uC790\\uCCB4\\uB294 \\uBCC0\\uD558\\uC9C0 \\uC54A\\uC558\\uB2E4.\nconfig.url = 'https://bad-url.com'\n\n// \\uC774\\uB807\\uAC8C \\uD574\\uC57C \\uBD88\\uBCC0\\uC131\\uC774 \\uBCF4\\uC7A5\\uB41C\\uB2E4.\nObject.freeze(config)\n`})}),`\n`,(0,e.jsx)(n.p,{children:`2\\uBC88\\uC778 \\uC5B8\\uC5B4\\uB294 \\uBD88\\uBCC0\\uC73C\\uB85C \\uC120\\uC5B8\\uB9CC \\uD558\\uBA74 \\uC5B4\\uB5A4 \\uBCC0\\uC218\\uAC00 \\uAC00\\uB9AC\\uD0A4\\uB294 \\uB300\\uC0C1\\uC774 \\uBC14\\uB00C\\uC9C0 \\uC54A\\uACE0,\n\\uB300\\uC0C1 \\uC790\\uCCB4\\uC758 \\uAC12\\uB3C4 \\uBCC0\\uD558\\uC9C0 \\uC54A\\uB294 \\uAC83\\uC774 \\uBCF4\\uC7A5\\uB41C\\uB2E4.`}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-rust\",children:'let map = HashMap::new();\\n// \\uC544\\uB798\\uC758 \\uCF54\\uB4DC\\uB294 \\uCEF4\\uD30C\\uC77C\\uC774 \\uC548\\uB41C\\uB2E4.\\n// `insert` \\uBA54\\uC18C\\uB4DC\\uB294 `(\u0026mut HashMap\u003cK, V\u003e, K, V) -\u003e Option\u003cV\u003e` \\uD0C0\\uC785\\uC774\\uACE0,\\n// `map`\\uC740 `mut`\\uAC00 \\uC544\\uB2C8\\uAE30 \\uB54C\\uBB38\\uC5D0 `\u0026mut`\\uB85C \\uBE4C\\uB9B4 \\uC218\\uAC00 \\uC5C6\\uB2E4.\\nmap.insert(37, \"a\");\\n'})}),`\n`,(0,e.jsxs)(n.p,{children:[`\\uC2A4\\uCE7C\\uB77C\\uB294 1\\uBC88\\uC778 \\uC5B8\\uC5B4\\uC774\\uB2E4. \\uB300\\uC2E0 \\uAC00\\uBCC0 \\uC790\\uB8CC\\uAD6C\\uC870\\uC640 \\uBD88\\uBCC0 \\uC790\\uB8CC\\uAD6C\\uC870\\uB97C \\uAD6C\\uBD84\\uD558\\uC5EC \\uC774\\uB97C\n\\uD0C0\\uC785\\uC73C\\uB85C \\uBA85\\uC2DC\\uD588\\uB2E4.\n\\uAC00\\uBCC0 \\uC790\\uB8CC\\uAD6C\\uC870\\uB85C \\uC120\\uC5B8\\uD558\\uBA74 `,(0,e.jsx)(n.code,{children:\"val\"}),\"\\uB85C \\uC120\\uC5B8\\uD558\\uB354\\uB77C\\uB3C4 \\uBD88\\uBCC0\\uC774 \\uBCF4\\uC7A5\\uB418\\uC9C0 \\uC54A\\uB294\\uB2E4.\"]}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`val arr = Array(1, 2)\n\n// \\uC5C5\\uB370\\uC774\\uD2B8\\uAC00 \\uAC00\\uB2A5\\uD558\\uB2E4.\narr.update(0, 42)\n`})}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`// \\uC774\\uB807\\uAC8C\\uB294 \\uAC00\\uB2A5\\uD558\\uB2E4.\n// arr\\uC774 \\uAC00\\uB9AC\\uD0A4\\uACE0 \\uC788\\uB358 List\\uAC00 \\uAC16\\uACE0 \\uC788\\uB294 \\uAC12\\uC774 \\uBC14\\uB010 \\uAC83\\uC774 \\uC544\\uB2C8\\uB77C\n// arr\\uC5D0 \\uC5C5\\uB370\\uC774\\uD2B8\\uB41C List\\uAC00 \\uC7AC\\uD560\\uB2F9\\uB41C\\uB2E4\nvar arr = List(1, 2)\narr.updated(0, 42)\n\n// \\uC774\\uB807\\uAC8C\\uB294 \\uC7AC\\uADC0\\uC801\\uC778 \\uAC12 \\uCC38\\uACE0\\uB77C\\uACE0 \\uBD88\\uAC00\\uB2A5\\uD558\\uB2E4\nval arr = List(1, 2)\nval arr = arr.updated(0, 42)\n`})}),`\n`,(0,e.jsx)(n.h2,{children:\"\\uC790\\uB8CC\\uAD6C\\uC870\"}),`\n`,(0,e.jsx)(n.p,{children:`LISP \\uACC4\\uC5F4\\uC758 \\uAD6C\\uC870\\uC801 \\uD0C0\\uC774\\uD551 \\uC5B8\\uC5B4\\uB4E4\\uC740 \\uD45C\\uC900 \\uC790\\uB8CC\\uAD6C\\uC870 \\uBA87 \\uAC1C\\uB97C \\uC5F4\\uC2EC\\uD788 \\uB3CC\\uB824\\uC368\\uBA39\\uB294\\uB2E4.\n\\uB530\\uB77C\\uC11C \\uC790\\uB8CC\\uAD6C\\uC870\\uC758 \\uB9AC\\uD130\\uB7F4 \\uD45C\\uD604\\uB3C4 \\uAC04\\uB7B5\\uD558\\uACE0 \\uD2B9\\uC9D5\\uC801\\uC774\\uB2E4.`}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-elixir\",children:`tuple = {1, 2}\nlist = [1, 2]\ntuple_in_list = [a: 2, b: 4]\nmap = %{:a =\u003e 2, :b =\u003e 4}\nfunction = fn x -\u003e x end\ncustom_type = %CustomType{field: value}\n`})}),`\n`,(0,e.jsx)(n.p,{children:`\\uC2A4\\uCE7C\\uB77C\\uB294 \\uBC18\\uB300\\uB85C \\uB300\\uBD80\\uBD84\\uC758 \\uC790\\uB8CC\\uAD6C\\uC870\\uB294 \\uB9AC\\uD130\\uB7F4\\uC774 \\uC5C6\\uACE0 \\uC5F4\\uC2EC\\uD788 \\uD0C0\\uC785\\uC744 \\uBA85\\uC2DC\\uD574\\uC57C\\uD55C\\uB2E4.\n\\uB300\\uC2E0 \\uC790\\uB8CC\\uAD6C\\uC870\\uAC00 \\uD48D\\uBD80\\uD558\\uBA70 \\uB9AC\\uD130\\uB7F4\\uC774 \\uC77C\\uAD00\\uC801\\uC774\\uB2E4.`}),`\n`,(0,e.jsx)(n.p,{children:\"\\uC704\\uC5D0\\uC11C \\uC598\\uAE30\\uD55C \\uB300\\uB85C \\uAC00\\uBCC0 \\uC790\\uB8CC\\uAD6C\\uC870\\uC640 \\uBD88\\uBCC0 \\uC790\\uB8CC\\uAD6C\\uC870\\uB97C \\uAD6C\\uBCC4\\uD558\\uAE30\\uB3C4 \\uD55C\\uB2E4.\"}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`val tuple: (String, Int) = (\"localhost\", 80)\nval list: List[Int] = List(1, 2, 3, 4, 5)\nval array: Array[Int] = Array(1, 2, 3, 4, 5)\nval set: Set[Int](1, 2, 3, 4, 5)\nval map: scala.collection.immutable.Map[String,Int] = Map(\"a\" -\u003e 1)\nval function: Any =\u003e Any = (x: Any) =\u003e x\n`})}),`\n`,(0,e.jsx)(n.h3,{children:\"List\"}),`\n`,(0,e.jsx)(n.p,{children:\"\\uB79C\\uB364 \\uC5D1\\uC11C\\uC2A4\\uAC00 \\uAC00\\uB2A5\\uD558\\uACE0, \\uB3D9\\uC885 \\uC790\\uB8CC\\uB9CC \\uB2F4\\uC744 \\uC218 \\uC788\\uACE0, \\uC21C\\uC11C\\uAC00 \\uBCF4\\uC7A5\\uB418\\uBA70 \\uBD88\\uBCC0\\uC774\\uB2E4.\"}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`val l = List(\"one\", \"two\", \"three\")\n`})}),`\n`,(0,e.jsxs)(n.p,{children:[`\\uB3D9\\uC885 \\uC790\\uB8CC\\uB9CC \\uB2F4\\uC744 \\uC218 \\uC788\\uB2E4.\n\\uC11C\\uB85C \\uB2E4\\uB978 \\uC790\\uB8CC\\uD615\\uC744 \\uB2F4\\uACE0\\uC790 \\uD558\\uB294 \\uACBD\\uC6B0, \\uC774\\uC5D0 \\uB300\\uD55C \\uD0C0\\uC785\\uC744 \\uC0C8\\uB85C \\uC120\\uC5B8\\uD558\\uAC70\\uB098 `,(0,e.jsx)(n.code,{children:\"Any\"}),`\\uB97C\n\\uC368\\uC57C\\uD55C\\uB2E4. \\uC2A4\\uCE7C\\uB77C 3\\uC5D0\\uC11C\\uB294 \\uD569\\uD0C0\\uC785\\uC744 \\uC9C0\\uC6D0\\uD558\\uBBC0\\uB85C \\uD3B8\\uD558\\uAC8C \\uD569\\uD0C0\\uC785\\uC73C\\uB85C \\uCC98\\uB9AC\\uD558\\uBA74 \\uB41C\\uB2E4.`]}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`val l: List[Any] = List(\"one\", \"two\", 3)\n\n// \\uC2A4\\uCE7C\\uB77C 3\\uC758 \\uACBD\\uC6B0\nval l: List[String | Int] = List(\"one\", \"two\", 3)\n`})}),`\n`,(0,e.jsx)(n.h3,{children:\"Set\"}),`\n`,(0,e.jsx)(n.p,{children:\"\\uC21C\\uC11C\\uAC00 \\uBCF4\\uC7A5\\uB418\\uC9C0 \\uC54A\\uC73C\\uBA70 \\uBD88\\uBCC0\\uC774\\uB2E4.\"}),`\n`,(0,e.jsx)(n.h3,{children:\"Range\"}),`\n`,(0,e.jsx)(n.pre,{children:(0,e.jsx)(n.code,{className:\"language-scala\",children:`val res: scala.collection.immutable.Range.Inclusive = 1 to 10\nval res: scala.collection.immutable.Range = 1 until 10\n`})}),`\n`,(0,e.jsx)(n.h2,{children:\"\\uC81C\\uC5B4\\uAD6C\\uC870\"}),`\n`,(0,e.jsxs)(n.p,{children:[\"\\uC81C\\uC5B4\\uAD6C\\uC870\\uC758 \\uC870\\uAC74\\uBB38\\uC5D0\\uB294 \",(0,e.jsx)(n.code,{children:\"Boolean\"}),\" \\uD0C0\\uC785\\uB9CC \\uB4E4\\uC5B4\\uAC08 \\uC218 \\uC788\\uB2E4.\"]}),`\n`,(0,e.jsxs)(n.ul,{children:[`\n`,(0,e.jsx)(n.li,{children:(0,e.jsx)(n.code,{children:\"while\"})}),`\n`,(0,e.jsx)(n.li,{children:(0,e.jsx)(n.code,{children:\"for\"})}),`\n`,(0,e.jsx)(n.li,{children:(0,e.jsx)(n.code,{children:\"foreach[U](f: (T) =\u003e U): Unit\"})}),`\n`]})]})}function S(l={}){let{wrapper:n}=l.components||{};return n?(0,e.jsx)(n,Object.assign({},l,{children:(0,e.jsx)(o,l)})):o(l)}var b=S;return y(M);})();\n;return Component;"},"_id":"scala.md","_raw":{"sourceFilePath":"scala.md","sourceFileName":"scala.md","sourceFileDir":".","contentType":"markdown","flattenedPath":"scala"},"type":"Note","slug":"scala"}},"__N_SSG":true},"page":"/n/[[...slug]]","query":{"slug":["scala"]},"buildId":"GlTOjBOhO6xWONgruXGi2","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

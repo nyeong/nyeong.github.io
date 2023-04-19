@@ -1,0 +1,147 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/_next/static/chunks/webpack-8fa1640cc84ba8fe.js" defer=""></script><script src="/_next/static/chunks/framework-2c79e2a64abdb08b.js" defer=""></script><script src="/_next/static/chunks/main-4dcb7f9b52833aba.js" defer=""></script><script src="/_next/static/chunks/pages/_app-aea6920bd27938ca.js" defer=""></script><script src="/_next/static/chunks/664-8af8765c6fed5950.js" defer=""></script><script src="/_next/static/chunks/pages/n/%5B%5B...slug%5D%5D-bdd4a78633ed557a.js" defer=""></script><script src="/_next/static/GlTOjBOhO6xWONgruXGi2/_buildManifest.js" defer=""></script><script src="/_next/static/GlTOjBOhO6xWONgruXGi2/_ssgManifest.js" defer=""></script></head><body><div id="__next"><nav><div><a href="/">하나씩</a></div><div><a href="/n">index</a><a href="/tags">주제별</a></div></nav><div><main><article><header><h1>엘릭서</h1></header><h2>이상한 점</h2>
+<p>혹은 아쉬운 점</p>
+<h3>익명 함수</h3>
+<p>정확히는 변수에 할당된 함수를 호출하는 과정이 번잡스럽다.</p>
+<pre><code class="language-elixir"># `def`로 함수를 정의하고 호출할 때에는 아무 문제가 없다
+def add(x, y), do: x + y
+add(1, 2)
+
+# 익명 함수를 변수에 할당하고 호출하려면 `.`을 찍어야 한다.
+add = fn x, y -&gt; x + y end
+add.(1, 2)
+
+# 기명 함수를 변수에 할당하고 출력할 때에도 `.`을 찍어야 한다.
+add = &amp;+/2
+add.(1, 2)
+</code></pre>
+<p><code>add</code>를 변수로써 다룰 때와 함수로써 호출할 때를 구별하기 위하여 <code>.</code>을 찍어야
+한다.</p>
+<p>참고: <a href="https://ragiragi.github.io/2019/11/01/anonymous-function-and-the-dot/">Anonymous Function and the Dot</a></p>
+<h3>iex에서 바로 함수를 정의할 수 없음</h3>
+<p><code>iex</code>에서 <code>def</code>로 함수를 정의하려고 하면 모듈에서 하시오! 하며 거부한다.</p>
+<p>루비는 <code>irb</code>에서 선언한 것들을 모듈로 감싸주던 것 같은데 잘 기억 안난다.</p>
+<pre><code class="language-elixir">iex&gt; def sum(a, b), do: a + b
+** (ArgumentError) cannot invoke def/2 outside module
+    (elixir 1.14.2) lib/kernel.ex:6387: Kernel.assert_module_scope/3
+    (elixir 1.14.2) lib/kernel.ex:5084: Kernel.define/4
+    (elixir 1.14.2) expanding macro: Kernel.def/2
+    iex: (file)
+</code></pre>
+<h3>arity?</h3>
+<p>함수를 다룰 때 <code>arity</code>, 차수를 중요하게 다룬다. 어떤 함수를 특정하기 위해서는
+함수 이름 + 차수가 필요하다.</p>
+<pre><code class="language-elixir">def some_function(a)
+def some_function(a, b)
+
+&amp;some_function/1
+&amp;some_function/2
+</code></pre>
+<h3>패턴 매칭으로 함수 분리</h3>
+<p>엘릭서에서는 함수의 인자를, 선언부부터 패턴매칭 할 수 있다.
+이를 이용하여 어떤 인자가 넘어오냐에 따라 아예 다른 함수 몸체를 호출한다.
+그런데 실질적으로 다른 동작을 함에도 불구하고 같은 함수 취급을 받는다.</p>
+<p>아래처럼 같은 맥락을 다루는 경우라면 문제가 없지만...:</p>
+<pre><code class="language-elixir">@spec elevator(integer()) :: String.t()
+def elevator(1), do: &quot;Go to 1st floor&quot;
+def elevator(2), do: &quot;Go to 2nd floor&quot;
+def elevator(3), do: &quot;Go to 3rd floor&quot;
+def elevator(a), do: &quot;Go to #{a}th floor&quot;
+</code></pre>
+<p>이게 타입 시스템과 물리면 분석하기 어려워진다. 아래의 <code>negate/1</code> 함수의 예를
+보자.</p>
+<pre><code class="language-elixir">@spec negate(x :: integer() | boolean()) :: integer() | boolean()
+def negate(x) when is_integer(x), do: -x
+def negate(x) when is_boolean(x), do: not x
+</code></pre>
+<p>여기서 선언한 <code>negate/1</code> 함수는
+<code>negate(1) = -1</code>이며 <code>negate(true) = false</code>로 상식적이고 예측 가능한 함수이다.</p>
+<p>그러나 타입만 보면 <code>integer() | boolean()</code>을 받아서 <code>integer() | boolean()</code>을
+반환하는 함수이므로 <code>integer() -&gt; booelan()</code> 혹은 <code>booelan() -&gt; integer()</code>인
+경우도 (타입만 본다면) 있을 수 있다.</p>
+<figure><img src="/assets/elixir-negate-function.png"/><figcaption>ElixirLS가 분석한 negate 함수의 타입</figcaption></figure>
+<pre><code class="language-elixir"># 인간이 볼 때, `negate`는 `integer -&gt; integer | boolean -&gt; boolean`이지만
+# 현재 엘릭서의 타입 시스템으로는 `integer | booelan -&gt; integer | boolean`이다.
+
+res = negate(3)
+
+# 따라서 사람에게 res가 `integer`임은 당연하고, 바로 알 수 있지만
+# 정적 분석 도구는 res가 `integer | boolean`일 것으로 예측한다.
+</code></pre>
+<p>엘릭서에서 자주 쓰는 <code>GenServer</code>에서 쓰이는 디자인 패턴을 보면 해당 모듈이
+서버로서 받는 요청을 <code>handle_call</code>, <code>handle_cast</code> 콜백을 구현함으로서
+처리한다. 아무리 많은 콜백을 만들더라도 결국은 <code>handle_call/3</code>, <code>handle_cast/2</code>
+두 개의 함수만 남게 된다.</p>
+<p>이러한 프로그램이 엘릭서 코드를 분석하기 어렵게 하며, 도구의 지원을 받기 어렵게
+하는 것 같다.</p>
+<p>아래는 엘릭서에서 자주 쓰는 <code>GenServer</code> 패턴이다.</p>
+<pre><code class="language-elixir">defmodule Stack do
+  use GenServer
+
+  @impl true
+  def handle_call(:pop, _from, [head | tail]) do
+    {:reply, head, tail}
+  end
+
+  @impl true
+  def handle_cast({:push, element}, state) do
+    {:noreply, [element | state]}
+  end
+end
+
+{:ok, stack} = GenServer.start_link(Stack, [])
+GenServer.call(stack, :pop)
+GenServer.cast(stack, {:push, :value})
+</code></pre>
+<p>스택에서 값을 꺼내지 않고 제일 위의 값을 확인하는 <code>peek</code> 연산을 구현한다고 하자.
+그러면 <code>handle_call</code>의 첫번째 인자가 <code>:peek</code>인 특수한 경우로서 처리하게 된다:</p>
+<pre><code class="language-elixir"># 구현
+def handle_call(:peek, _from, [head | _] = state), do: {:reply, head, state}
+
+# 사용
+top_of_stack = GenServer.call(stack, :peek)
+</code></pre>
+<p><code>handle_call</code> 함수는 실질적으로 다른 맥락에 따라 다른 동작을 하지만 단 하나의
+함수이며, 처리해야하는 경우가 많아질 수록 복잡한 타입을 갖게 되어 분석이
+어려워 질 것이다.</p>
+<p>엘릭서 코어팀은 집합 기반 타입 시스템을 도입하여 이를 해결하고자 하고 있다.</p>
+<p>https://elixir-lang.org/blog/2022/10/05/my-future-with-elixir-set-theoretic-types/</p>
+<h3>Typespec</h3>
+<p>컴파일 언어이면서 동적 타입 시스템인 것이 일단 독특하다.
+생각 외로 이런 언어가 많긴 하다. Clojure도 그렇고, CPython도 내 기억으론
+실행 전에 바이트코드로 컴파일된다.</p>
+<ol>
+<li>구조체의 타입은 타입스펙으로 별도로 선언해주어야함.</li>
+<li>구조체는 모듈 이름을 따르면서, 구조체의 타입은 그렇게 할 수 없음(<code>t()</code>).</li>
+<li>타입 표시에 자꾸 괄호(<code>()</code>)를 붙여야 함.</li>
+</ol>
+<p>아래는 웹 애플리케이션을 다룰 때 주로 쓰는 <code>Plug.Conn</code> 객체의 구현의 일부이다. 구조체를 다룰 때 아래처럼 <code>defstruct</code>에는 필드와 초기값을 선언하고, 필요하다면 <code>@type</code>으로 그에 대한 타입을 덧붙여준다.</p>
+<pre><code class="language-elixir">defmodule Plug.Conn do
+  defstruct adapter: {Plug.MissingAdapter, nil},
+            assigns: %{},
+            body_params: %Unfetched{aspect: :body_params}
+            # 이외의 필드는 숨김
+  
+  @type t :: %__MODULE__{
+    adapter: adapter,
+    assigns: assigns,
+    body_params: params | Unfetched.t()
+    # 이외의 필드는 숨김
+  }
+end
+</code></pre>
+<p>이러다보니 각 필드를 두 번 선언해야한다. 고칠 때에도 두 번 고쳐야 하는데... 생각해보니 보통의 언어들도 초기값을 정의하려면 그런 것 같기도 하고?</p>
+<p>하지만 구조체는 모듈을 기준으로 선언하면서, 타입은 모듈 이름으로 선언 못하고,
+<code>t</code>를 붙여줘야하는 건 확실히 이상하고 어색하다. 거의 표준처럼 쓰고 있지만
+표준은 아닌 듯.</p>
+<p>그래서 타입을 선언할 때 <code>String</code>을 <code>String</code>이라고 부를 수 없다.</p>
+<pre><code class="language-elixir">defmodule String do
+  # Typespec으로 String은 이렇게 선언한다.
+  @type t :: binary
+end
+
+# `ends_with?`이라는 함수를 만드려면, 아래와 같이 `String.t()`로 선언해야 한다.
+@spec ends_with?(String.t(), String.t()) :: boolean()
+</code></pre>
+<p>추가로 위의 <code>ends_with?/2</code> 함수의 스펙은 괄호 없이 아래처럼 적어도 되긴 하다:</p>
+<pre><code class="language-elixir">@spec ends_with?(String.t, String.t) :: boolean
+</code></pre></article></main></div><footer><ul><li><a href="https://github.com/nyeong/hanassig">Repo</a></li><li>안녕 ©️ <a href="https://github.com/nyeong/hanassig/blob/main/LICENSE">CC BY-SA</a></li></ul></footer></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"note":{"title":"엘릭서","description":"글 설명","date":"2023-03-14T00:00:00.000Z","tags":null,"body":{"raw":"\n## 이상한 점\n\n혹은 아쉬운 점\n\n### 익명 함수\n\n정확히는 변수에 할당된 함수를 호출하는 과정이 번잡스럽다.\n\n```elixir\n# `def`로 함수를 정의하고 호출할 때에는 아무 문제가 없다\ndef add(x, y), do: x + y\nadd(1, 2)\n\n# 익명 함수를 변수에 할당하고 호출하려면 `.`을 찍어야 한다.\nadd = fn x, y -\u003e x + y end\nadd.(1, 2)\n\n# 기명 함수를 변수에 할당하고 출력할 때에도 `.`을 찍어야 한다.\nadd = \u0026+/2\nadd.(1, 2)\n```\n\n`add`를 변수로써 다룰 때와 함수로써 호출할 때를 구별하기 위하여 `.`을 찍어야\n한다.\n\n참고: [Anonymous Function and the Dot](https://ragiragi.github.io/2019/11/01/anonymous-function-and-the-dot/)\n\n### iex에서 바로 함수를 정의할 수 없음\n\n`iex`에서 `def`로 함수를 정의하려고 하면 모듈에서 하시오! 하며 거부한다.\n\n루비는 `irb`에서 선언한 것들을 모듈로 감싸주던 것 같은데 잘 기억 안난다.\n\n```elixir\niex\u003e def sum(a, b), do: a + b\n** (ArgumentError) cannot invoke def/2 outside module\n    (elixir 1.14.2) lib/kernel.ex:6387: Kernel.assert_module_scope/3\n    (elixir 1.14.2) lib/kernel.ex:5084: Kernel.define/4\n    (elixir 1.14.2) expanding macro: Kernel.def/2\n    iex: (file)\n```\n\n### arity?\n\n함수를 다룰 때 `arity`, 차수를 중요하게 다룬다. 어떤 함수를 특정하기 위해서는\n함수 이름 + 차수가 필요하다.\n\n```elixir\ndef some_function(a)\ndef some_function(a, b)\n\n\u0026some_function/1\n\u0026some_function/2\n```\n\n### 패턴 매칭으로 함수 분리\n\n엘릭서에서는 함수의 인자를, 선언부부터 패턴매칭 할 수 있다.\n이를 이용하여 어떤 인자가 넘어오냐에 따라 아예 다른 함수 몸체를 호출한다.\n그런데 실질적으로 다른 동작을 함에도 불구하고 같은 함수 취급을 받는다.\n\n아래처럼 같은 맥락을 다루는 경우라면 문제가 없지만...:\n\n```elixir\n@spec elevator(integer()) :: String.t()\ndef elevator(1), do: \"Go to 1st floor\"\ndef elevator(2), do: \"Go to 2nd floor\"\ndef elevator(3), do: \"Go to 3rd floor\"\ndef elevator(a), do: \"Go to #{a}th floor\"\n```\n\n이게 타입 시스템과 물리면 분석하기 어려워진다. 아래의 `negate/1` 함수의 예를\n보자.\n\n```elixir\n@spec negate(x :: integer() | boolean()) :: integer() | boolean()\ndef negate(x) when is_integer(x), do: -x\ndef negate(x) when is_boolean(x), do: not x\n```\n\n여기서 선언한 `negate/1` 함수는\n`negate(1) = -1`이며 `negate(true) = false`로 상식적이고 예측 가능한 함수이다.\n\n그러나 타입만 보면 `integer() | boolean()`을 받아서 `integer() | boolean()`을\n반환하는 함수이므로 `integer() -\u003e booelan()` 혹은 `booelan() -\u003e integer()`인\n경우도 (타입만 본다면) 있을 수 있다.\n\n\u003cfigure\u003e\n\t\u003cimg src=\"/assets/elixir-negate-function.png\" /\u003e\n\t\u003cfigcaption\u003eElixirLS가 분석한 negate 함수의 타입\u003c/figcaption\u003e\n\u003c/figure\u003e\n\n```elixir\n# 인간이 볼 때, `negate`는 `integer -\u003e integer | boolean -\u003e boolean`이지만\n# 현재 엘릭서의 타입 시스템으로는 `integer | booelan -\u003e integer | boolean`이다.\n\nres = negate(3)\n\n# 따라서 사람에게 res가 `integer`임은 당연하고, 바로 알 수 있지만\n# 정적 분석 도구는 res가 `integer | boolean`일 것으로 예측한다.\n```\n\n엘릭서에서 자주 쓰는 `GenServer`에서 쓰이는 디자인 패턴을 보면 해당 모듈이\n서버로서 받는 요청을 `handle_call`, `handle_cast` 콜백을 구현함으로서\n처리한다. 아무리 많은 콜백을 만들더라도 결국은 `handle_call/3`, `handle_cast/2`\n두 개의 함수만 남게 된다.\n\n이러한 프로그램이 엘릭서 코드를 분석하기 어렵게 하며, 도구의 지원을 받기 어렵게\n하는 것 같다.\n\n아래는 엘릭서에서 자주 쓰는 `GenServer` 패턴이다.\n\n```elixir\ndefmodule Stack do\n  use GenServer\n\n  @impl true\n  def handle_call(:pop, _from, [head | tail]) do\n    {:reply, head, tail}\n  end\n\n  @impl true\n  def handle_cast({:push, element}, state) do\n    {:noreply, [element | state]}\n  end\nend\n\n{:ok, stack} = GenServer.start_link(Stack, [])\nGenServer.call(stack, :pop)\nGenServer.cast(stack, {:push, :value})\n```\n\n스택에서 값을 꺼내지 않고 제일 위의 값을 확인하는 `peek` 연산을 구현한다고 하자.\n그러면 `handle_call`의 첫번째 인자가 `:peek`인 특수한 경우로서 처리하게 된다:\n\n```elixir\n# 구현\ndef handle_call(:peek, _from, [head | _] = state), do: {:reply, head, state}\n\n# 사용\ntop_of_stack = GenServer.call(stack, :peek)\n```\n\n`handle_call` 함수는 실질적으로 다른 맥락에 따라 다른 동작을 하지만 단 하나의\n함수이며, 처리해야하는 경우가 많아질 수록 복잡한 타입을 갖게 되어 분석이\n어려워 질 것이다.\n\n엘릭서 코어팀은 집합 기반 타입 시스템을 도입하여 이를 해결하고자 하고 있다.\n\nhttps://elixir-lang.org/blog/2022/10/05/my-future-with-elixir-set-theoretic-types/\n\n### Typespec\n\n컴파일 언어이면서 동적 타입 시스템인 것이 일단 독특하다.\n생각 외로 이런 언어가 많긴 하다. Clojure도 그렇고, CPython도 내 기억으론\n실행 전에 바이트코드로 컴파일된다.\n\n1. 구조체의 타입은 타입스펙으로 별도로 선언해주어야함.\n2. 구조체는 모듈 이름을 따르면서, 구조체의 타입은 그렇게 할 수 없음(`t()`).\n3. 타입 표시에 자꾸 괄호(`()`)를 붙여야 함.\n\n아래는 웹 애플리케이션을 다룰 때 주로 쓰는 `Plug.Conn` 객체의 구현의 일부이다. 구조체를 다룰 때 아래처럼 `defstruct`에는 필드와 초기값을 선언하고, 필요하다면 `@type`으로 그에 대한 타입을 덧붙여준다.\n\n```elixir\ndefmodule Plug.Conn do\n  defstruct adapter: {Plug.MissingAdapter, nil},\n            assigns: %{},\n            body_params: %Unfetched{aspect: :body_params}\n            # 이외의 필드는 숨김\n  \n  @type t :: %__MODULE__{\n    adapter: adapter,\n    assigns: assigns,\n    body_params: params | Unfetched.t()\n    # 이외의 필드는 숨김\n  }\nend\n```\n\n이러다보니 각 필드를 두 번 선언해야한다. 고칠 때에도 두 번 고쳐야 하는데... 생각해보니 보통의 언어들도 초기값을 정의하려면 그런 것 같기도 하고? \n\n하지만 구조체는 모듈을 기준으로 선언하면서, 타입은 모듈 이름으로 선언 못하고,\n`t`를 붙여줘야하는 건 확실히 이상하고 어색하다. 거의 표준처럼 쓰고 있지만\n표준은 아닌 듯.\n\n그래서 타입을 선언할 때 `String`을 `String`이라고 부를 수 없다.\n\n```elixir\ndefmodule String do\n  # Typespec으로 String은 이렇게 선언한다.\n  @type t :: binary\nend\n\n# `ends_with?`이라는 함수를 만드려면, 아래와 같이 `String.t()`로 선언해야 한다.\n@spec ends_with?(String.t(), String.t()) :: boolean()\n```\n\n추가로 위의 `ends_with?/2` 함수의 스펙은 괄호 없이 아래처럼 적어도 되긴 하다:\n\n```elixir\n@spec ends_with?(String.t, String.t) :: boolean\n```\n","code":"var Component=(()=\u003e{var s=Object.create;var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var g=Object.getOwnPropertyNames;var u=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var m=(d,e)=\u003e()=\u003e(e||d((e={exports:{}}).exports,e),e.exports),x=(d,e)=\u003e{for(var r in e)i(d,r,{get:e[r],enumerable:!0})},a=(d,e,r,c)=\u003e{if(e\u0026\u0026typeof e==\"object\"||typeof e==\"function\")for(let l of g(e))!f.call(d,l)\u0026\u0026l!==r\u0026\u0026i(d,l,{get:()=\u003ee[l],enumerable:!(c=p(e,l))||c.enumerable});return d};var _=(d,e,r)=\u003e(r=d!=null?s(u(d)):{},a(e||!d||!d.__esModule?i(r,\"default\",{value:d,enumerable:!0}):r,d)),b=d=\u003ea(i({},\"__esModule\",{value:!0}),d);var t=m((N,o)=\u003e{o.exports=_jsx_runtime});var v={};x(v,{default:()=\u003ek,frontmatter:()=\u003ey});var n=_(t()),y={title:\"\\uC5D8\\uB9AD\\uC11C\",description:\"\\uAE00 \\uC124\\uBA85\",date:new Date(1678752e6),tags:null};function h(d){let e=Object.assign({h2:\"h2\",p:\"p\",h3:\"h3\",pre:\"pre\",code:\"code\",a:\"a\",ol:\"ol\",li:\"li\"},d.components);return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h2,{children:\"\\uC774\\uC0C1\\uD55C \\uC810\"}),`\n`,(0,n.jsx)(e.p,{children:\"\\uD639\\uC740 \\uC544\\uC26C\\uC6B4 \\uC810\"}),`\n`,(0,n.jsx)(e.h3,{children:\"\\uC775\\uBA85 \\uD568\\uC218\"}),`\n`,(0,n.jsx)(e.p,{children:\"\\uC815\\uD655\\uD788\\uB294 \\uBCC0\\uC218\\uC5D0 \\uD560\\uB2F9\\uB41C \\uD568\\uC218\\uB97C \\uD638\\uCD9C\\uD558\\uB294 \\uACFC\\uC815\\uC774 \\uBC88\\uC7A1\\uC2A4\\uB7FD\\uB2E4.\"}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`# \\`def\\`\\uB85C \\uD568\\uC218\\uB97C \\uC815\\uC758\\uD558\\uACE0 \\uD638\\uCD9C\\uD560 \\uB54C\\uC5D0\\uB294 \\uC544\\uBB34 \\uBB38\\uC81C\\uAC00 \\uC5C6\\uB2E4\ndef add(x, y), do: x + y\nadd(1, 2)\n\n# \\uC775\\uBA85 \\uD568\\uC218\\uB97C \\uBCC0\\uC218\\uC5D0 \\uD560\\uB2F9\\uD558\\uACE0 \\uD638\\uCD9C\\uD558\\uB824\\uBA74 \\`.\\`\\uC744 \\uCC0D\\uC5B4\\uC57C \\uD55C\\uB2E4.\nadd = fn x, y -\u003e x + y end\nadd.(1, 2)\n\n# \\uAE30\\uBA85 \\uD568\\uC218\\uB97C \\uBCC0\\uC218\\uC5D0 \\uD560\\uB2F9\\uD558\\uACE0 \\uCD9C\\uB825\\uD560 \\uB54C\\uC5D0\\uB3C4 \\`.\\`\\uC744 \\uCC0D\\uC5B4\\uC57C \\uD55C\\uB2E4.\nadd = \u0026+/2\nadd.(1, 2)\n`})}),`\n`,(0,n.jsxs)(e.p,{children:[(0,n.jsx)(e.code,{children:\"add\"}),\"\\uB97C \\uBCC0\\uC218\\uB85C\\uC368 \\uB2E4\\uB8F0 \\uB54C\\uC640 \\uD568\\uC218\\uB85C\\uC368 \\uD638\\uCD9C\\uD560 \\uB54C\\uB97C \\uAD6C\\uBCC4\\uD558\\uAE30 \\uC704\\uD558\\uC5EC \",(0,n.jsx)(e.code,{children:\".\"}),`\\uC744 \\uCC0D\\uC5B4\\uC57C\n\\uD55C\\uB2E4.`]}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uCC38\\uACE0: \",(0,n.jsx)(e.a,{href:\"https://ragiragi.github.io/2019/11/01/anonymous-function-and-the-dot/\",children:\"Anonymous Function and the Dot\"})]}),`\n`,(0,n.jsx)(e.h3,{children:\"iex\\uC5D0\\uC11C \\uBC14\\uB85C \\uD568\\uC218\\uB97C \\uC815\\uC758\\uD560 \\uC218 \\uC5C6\\uC74C\"}),`\n`,(0,n.jsxs)(e.p,{children:[(0,n.jsx)(e.code,{children:\"iex\"}),\"\\uC5D0\\uC11C \",(0,n.jsx)(e.code,{children:\"def\"}),\"\\uB85C \\uD568\\uC218\\uB97C \\uC815\\uC758\\uD558\\uB824\\uACE0 \\uD558\\uBA74 \\uBAA8\\uB4C8\\uC5D0\\uC11C \\uD558\\uC2DC\\uC624! \\uD558\\uBA70 \\uAC70\\uBD80\\uD55C\\uB2E4.\"]}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uB8E8\\uBE44\\uB294 \",(0,n.jsx)(e.code,{children:\"irb\"}),\"\\uC5D0\\uC11C \\uC120\\uC5B8\\uD55C \\uAC83\\uB4E4\\uC744 \\uBAA8\\uB4C8\\uB85C \\uAC10\\uC2F8\\uC8FC\\uB358 \\uAC83 \\uAC19\\uC740\\uB370 \\uC798 \\uAE30\\uC5B5 \\uC548\\uB09C\\uB2E4.\"]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`iex\u003e def sum(a, b), do: a + b\n** (ArgumentError) cannot invoke def/2 outside module\n    (elixir 1.14.2) lib/kernel.ex:6387: Kernel.assert_module_scope/3\n    (elixir 1.14.2) lib/kernel.ex:5084: Kernel.define/4\n    (elixir 1.14.2) expanding macro: Kernel.def/2\n    iex: (file)\n`})}),`\n`,(0,n.jsx)(e.h3,{children:\"arity?\"}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uD568\\uC218\\uB97C \\uB2E4\\uB8F0 \\uB54C \",(0,n.jsx)(e.code,{children:\"arity\"}),`, \\uCC28\\uC218\\uB97C \\uC911\\uC694\\uD558\\uAC8C \\uB2E4\\uB8EC\\uB2E4. \\uC5B4\\uB5A4 \\uD568\\uC218\\uB97C \\uD2B9\\uC815\\uD558\\uAE30 \\uC704\\uD574\\uC11C\\uB294\n\\uD568\\uC218 \\uC774\\uB984 + \\uCC28\\uC218\\uAC00 \\uD544\\uC694\\uD558\\uB2E4.`]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`def some_function(a)\ndef some_function(a, b)\n\n\u0026some_function/1\n\u0026some_function/2\n`})}),`\n`,(0,n.jsx)(e.h3,{children:\"\\uD328\\uD134 \\uB9E4\\uCE6D\\uC73C\\uB85C \\uD568\\uC218 \\uBD84\\uB9AC\"}),`\n`,(0,n.jsx)(e.p,{children:`\\uC5D8\\uB9AD\\uC11C\\uC5D0\\uC11C\\uB294 \\uD568\\uC218\\uC758 \\uC778\\uC790\\uB97C, \\uC120\\uC5B8\\uBD80\\uBD80\\uD130 \\uD328\\uD134\\uB9E4\\uCE6D \\uD560 \\uC218 \\uC788\\uB2E4.\n\\uC774\\uB97C \\uC774\\uC6A9\\uD558\\uC5EC \\uC5B4\\uB5A4 \\uC778\\uC790\\uAC00 \\uB118\\uC5B4\\uC624\\uB0D0\\uC5D0 \\uB530\\uB77C \\uC544\\uC608 \\uB2E4\\uB978 \\uD568\\uC218 \\uBAB8\\uCCB4\\uB97C \\uD638\\uCD9C\\uD55C\\uB2E4.\n\\uADF8\\uB7F0\\uB370 \\uC2E4\\uC9C8\\uC801\\uC73C\\uB85C \\uB2E4\\uB978 \\uB3D9\\uC791\\uC744 \\uD568\\uC5D0\\uB3C4 \\uBD88\\uAD6C\\uD558\\uACE0 \\uAC19\\uC740 \\uD568\\uC218 \\uCDE8\\uAE09\\uC744 \\uBC1B\\uB294\\uB2E4.`}),`\n`,(0,n.jsx)(e.p,{children:\"\\uC544\\uB798\\uCC98\\uB7FC \\uAC19\\uC740 \\uB9E5\\uB77D\\uC744 \\uB2E4\\uB8E8\\uB294 \\uACBD\\uC6B0\\uB77C\\uBA74 \\uBB38\\uC81C\\uAC00 \\uC5C6\\uC9C0\\uB9CC...:\"}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`@spec elevator(integer()) :: String.t()\ndef elevator(1), do: \"Go to 1st floor\"\ndef elevator(2), do: \"Go to 2nd floor\"\ndef elevator(3), do: \"Go to 3rd floor\"\ndef elevator(a), do: \"Go to #{a}th floor\"\n`})}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uC774\\uAC8C \\uD0C0\\uC785 \\uC2DC\\uC2A4\\uD15C\\uACFC \\uBB3C\\uB9AC\\uBA74 \\uBD84\\uC11D\\uD558\\uAE30 \\uC5B4\\uB824\\uC6CC\\uC9C4\\uB2E4. \\uC544\\uB798\\uC758 \",(0,n.jsx)(e.code,{children:\"negate/1\"}),` \\uD568\\uC218\\uC758 \\uC608\\uB97C\n\\uBCF4\\uC790.`]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`@spec negate(x :: integer() | boolean()) :: integer() | boolean()\ndef negate(x) when is_integer(x), do: -x\ndef negate(x) when is_boolean(x), do: not x\n`})}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uC5EC\\uAE30\\uC11C \\uC120\\uC5B8\\uD55C \",(0,n.jsx)(e.code,{children:\"negate/1\"}),` \\uD568\\uC218\\uB294\n`,(0,n.jsx)(e.code,{children:\"negate(1) = -1\"}),\"\\uC774\\uBA70 \",(0,n.jsx)(e.code,{children:\"negate(true) = false\"}),\"\\uB85C \\uC0C1\\uC2DD\\uC801\\uC774\\uACE0 \\uC608\\uCE21 \\uAC00\\uB2A5\\uD55C \\uD568\\uC218\\uC774\\uB2E4.\"]}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uADF8\\uB7EC\\uB098 \\uD0C0\\uC785\\uB9CC \\uBCF4\\uBA74 \",(0,n.jsx)(e.code,{children:\"integer() | boolean()\"}),\"\\uC744 \\uBC1B\\uC544\\uC11C \",(0,n.jsx)(e.code,{children:\"integer() | boolean()\"}),`\\uC744\n\\uBC18\\uD658\\uD558\\uB294 \\uD568\\uC218\\uC774\\uBBC0\\uB85C `,(0,n.jsx)(e.code,{children:\"integer() -\u003e booelan()\"}),\" \\uD639\\uC740 \",(0,n.jsx)(e.code,{children:\"booelan() -\u003e integer()\"}),`\\uC778\n\\uACBD\\uC6B0\\uB3C4 (\\uD0C0\\uC785\\uB9CC \\uBCF8\\uB2E4\\uBA74) \\uC788\\uC744 \\uC218 \\uC788\\uB2E4.`]}),`\n`,(0,n.jsxs)(\"figure\",{children:[(0,n.jsx)(\"img\",{src:\"/assets/elixir-negate-function.png\"}),(0,n.jsx)(\"figcaption\",{children:\"ElixirLS\\uAC00 \\uBD84\\uC11D\\uD55C negate \\uD568\\uC218\\uC758 \\uD0C0\\uC785\"})]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:\"# \\uC778\\uAC04\\uC774 \\uBCFC \\uB54C, `negate`\\uB294 `integer -\u003e integer | boolean -\u003e boolean`\\uC774\\uC9C0\\uB9CC\\n# \\uD604\\uC7AC \\uC5D8\\uB9AD\\uC11C\\uC758 \\uD0C0\\uC785 \\uC2DC\\uC2A4\\uD15C\\uC73C\\uB85C\\uB294 `integer | booelan -\u003e integer | boolean`\\uC774\\uB2E4.\\n\\nres = negate(3)\\n\\n# \\uB530\\uB77C\\uC11C \\uC0AC\\uB78C\\uC5D0\\uAC8C res\\uAC00 `integer`\\uC784\\uC740 \\uB2F9\\uC5F0\\uD558\\uACE0, \\uBC14\\uB85C \\uC54C \\uC218 \\uC788\\uC9C0\\uB9CC\\n# \\uC815\\uC801 \\uBD84\\uC11D \\uB3C4\\uAD6C\\uB294 res\\uAC00 `integer | boolean`\\uC77C \\uAC83\\uC73C\\uB85C \\uC608\\uCE21\\uD55C\\uB2E4.\\n\"})}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uC5D8\\uB9AD\\uC11C\\uC5D0\\uC11C \\uC790\\uC8FC \\uC4F0\\uB294 \",(0,n.jsx)(e.code,{children:\"GenServer\"}),`\\uC5D0\\uC11C \\uC4F0\\uC774\\uB294 \\uB514\\uC790\\uC778 \\uD328\\uD134\\uC744 \\uBCF4\\uBA74 \\uD574\\uB2F9 \\uBAA8\\uB4C8\\uC774\n\\uC11C\\uBC84\\uB85C\\uC11C \\uBC1B\\uB294 \\uC694\\uCCAD\\uC744 `,(0,n.jsx)(e.code,{children:\"handle_call\"}),\", \",(0,n.jsx)(e.code,{children:\"handle_cast\"}),` \\uCF5C\\uBC31\\uC744 \\uAD6C\\uD604\\uD568\\uC73C\\uB85C\\uC11C\n\\uCC98\\uB9AC\\uD55C\\uB2E4. \\uC544\\uBB34\\uB9AC \\uB9CE\\uC740 \\uCF5C\\uBC31\\uC744 \\uB9CC\\uB4E4\\uB354\\uB77C\\uB3C4 \\uACB0\\uAD6D\\uC740 `,(0,n.jsx)(e.code,{children:\"handle_call/3\"}),\", \",(0,n.jsx)(e.code,{children:\"handle_cast/2\"}),`\n\\uB450 \\uAC1C\\uC758 \\uD568\\uC218\\uB9CC \\uB0A8\\uAC8C \\uB41C\\uB2E4.`]}),`\n`,(0,n.jsx)(e.p,{children:`\\uC774\\uB7EC\\uD55C \\uD504\\uB85C\\uADF8\\uB7A8\\uC774 \\uC5D8\\uB9AD\\uC11C \\uCF54\\uB4DC\\uB97C \\uBD84\\uC11D\\uD558\\uAE30 \\uC5B4\\uB835\\uAC8C \\uD558\\uBA70, \\uB3C4\\uAD6C\\uC758 \\uC9C0\\uC6D0\\uC744 \\uBC1B\\uAE30 \\uC5B4\\uB835\\uAC8C\n\\uD558\\uB294 \\uAC83 \\uAC19\\uB2E4.`}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uC544\\uB798\\uB294 \\uC5D8\\uB9AD\\uC11C\\uC5D0\\uC11C \\uC790\\uC8FC \\uC4F0\\uB294 \",(0,n.jsx)(e.code,{children:\"GenServer\"}),\" \\uD328\\uD134\\uC774\\uB2E4.\"]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`defmodule Stack do\n  use GenServer\n\n  @impl true\n  def handle_call(:pop, _from, [head | tail]) do\n    {:reply, head, tail}\n  end\n\n  @impl true\n  def handle_cast({:push, element}, state) do\n    {:noreply, [element | state]}\n  end\nend\n\n{:ok, stack} = GenServer.start_link(Stack, [])\nGenServer.call(stack, :pop)\nGenServer.cast(stack, {:push, :value})\n`})}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uC2A4\\uD0DD\\uC5D0\\uC11C \\uAC12\\uC744 \\uAEBC\\uB0B4\\uC9C0 \\uC54A\\uACE0 \\uC81C\\uC77C \\uC704\\uC758 \\uAC12\\uC744 \\uD655\\uC778\\uD558\\uB294 \",(0,n.jsx)(e.code,{children:\"peek\"}),` \\uC5F0\\uC0B0\\uC744 \\uAD6C\\uD604\\uD55C\\uB2E4\\uACE0 \\uD558\\uC790.\n\\uADF8\\uB7EC\\uBA74 `,(0,n.jsx)(e.code,{children:\"handle_call\"}),\"\\uC758 \\uCCAB\\uBC88\\uC9F8 \\uC778\\uC790\\uAC00 \",(0,n.jsx)(e.code,{children:\":peek\"}),\"\\uC778 \\uD2B9\\uC218\\uD55C \\uACBD\\uC6B0\\uB85C\\uC11C \\uCC98\\uB9AC\\uD558\\uAC8C \\uB41C\\uB2E4:\"]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`# \\uAD6C\\uD604\ndef handle_call(:peek, _from, [head | _] = state), do: {:reply, head, state}\n\n# \\uC0AC\\uC6A9\ntop_of_stack = GenServer.call(stack, :peek)\n`})}),`\n`,(0,n.jsxs)(e.p,{children:[(0,n.jsx)(e.code,{children:\"handle_call\"}),` \\uD568\\uC218\\uB294 \\uC2E4\\uC9C8\\uC801\\uC73C\\uB85C \\uB2E4\\uB978 \\uB9E5\\uB77D\\uC5D0 \\uB530\\uB77C \\uB2E4\\uB978 \\uB3D9\\uC791\\uC744 \\uD558\\uC9C0\\uB9CC \\uB2E8 \\uD558\\uB098\\uC758\n\\uD568\\uC218\\uC774\\uBA70, \\uCC98\\uB9AC\\uD574\\uC57C\\uD558\\uB294 \\uACBD\\uC6B0\\uAC00 \\uB9CE\\uC544\\uC9C8 \\uC218\\uB85D \\uBCF5\\uC7A1\\uD55C \\uD0C0\\uC785\\uC744 \\uAC16\\uAC8C \\uB418\\uC5B4 \\uBD84\\uC11D\\uC774\n\\uC5B4\\uB824\\uC6CC \\uC9C8 \\uAC83\\uC774\\uB2E4.`]}),`\n`,(0,n.jsx)(e.p,{children:\"\\uC5D8\\uB9AD\\uC11C \\uCF54\\uC5B4\\uD300\\uC740 \\uC9D1\\uD569 \\uAE30\\uBC18 \\uD0C0\\uC785 \\uC2DC\\uC2A4\\uD15C\\uC744 \\uB3C4\\uC785\\uD558\\uC5EC \\uC774\\uB97C \\uD574\\uACB0\\uD558\\uACE0\\uC790 \\uD558\\uACE0 \\uC788\\uB2E4.\"}),`\n`,(0,n.jsx)(e.p,{children:\"https://elixir-lang.org/blog/2022/10/05/my-future-with-elixir-set-theoretic-types/\"}),`\n`,(0,n.jsx)(e.h3,{children:\"Typespec\"}),`\n`,(0,n.jsx)(e.p,{children:`\\uCEF4\\uD30C\\uC77C \\uC5B8\\uC5B4\\uC774\\uBA74\\uC11C \\uB3D9\\uC801 \\uD0C0\\uC785 \\uC2DC\\uC2A4\\uD15C\\uC778 \\uAC83\\uC774 \\uC77C\\uB2E8 \\uB3C5\\uD2B9\\uD558\\uB2E4.\n\\uC0DD\\uAC01 \\uC678\\uB85C \\uC774\\uB7F0 \\uC5B8\\uC5B4\\uAC00 \\uB9CE\\uAE34 \\uD558\\uB2E4. Clojure\\uB3C4 \\uADF8\\uB807\\uACE0, CPython\\uB3C4 \\uB0B4 \\uAE30\\uC5B5\\uC73C\\uB860\n\\uC2E4\\uD589 \\uC804\\uC5D0 \\uBC14\\uC774\\uD2B8\\uCF54\\uB4DC\\uB85C \\uCEF4\\uD30C\\uC77C\\uB41C\\uB2E4.`}),`\n`,(0,n.jsxs)(e.ol,{children:[`\n`,(0,n.jsx)(e.li,{children:\"\\uAD6C\\uC870\\uCCB4\\uC758 \\uD0C0\\uC785\\uC740 \\uD0C0\\uC785\\uC2A4\\uD399\\uC73C\\uB85C \\uBCC4\\uB3C4\\uB85C \\uC120\\uC5B8\\uD574\\uC8FC\\uC5B4\\uC57C\\uD568.\"}),`\n`,(0,n.jsxs)(e.li,{children:[\"\\uAD6C\\uC870\\uCCB4\\uB294 \\uBAA8\\uB4C8 \\uC774\\uB984\\uC744 \\uB530\\uB974\\uBA74\\uC11C, \\uAD6C\\uC870\\uCCB4\\uC758 \\uD0C0\\uC785\\uC740 \\uADF8\\uB807\\uAC8C \\uD560 \\uC218 \\uC5C6\\uC74C(\",(0,n.jsx)(e.code,{children:\"t()\"}),\").\"]}),`\n`,(0,n.jsxs)(e.li,{children:[\"\\uD0C0\\uC785 \\uD45C\\uC2DC\\uC5D0 \\uC790\\uAFB8 \\uAD04\\uD638(\",(0,n.jsx)(e.code,{children:\"()\"}),\")\\uB97C \\uBD99\\uC5EC\\uC57C \\uD568.\"]}),`\n`]}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uC544\\uB798\\uB294 \\uC6F9 \\uC560\\uD50C\\uB9AC\\uCF00\\uC774\\uC158\\uC744 \\uB2E4\\uB8F0 \\uB54C \\uC8FC\\uB85C \\uC4F0\\uB294 \",(0,n.jsx)(e.code,{children:\"Plug.Conn\"}),\" \\uAC1D\\uCCB4\\uC758 \\uAD6C\\uD604\\uC758 \\uC77C\\uBD80\\uC774\\uB2E4. \\uAD6C\\uC870\\uCCB4\\uB97C \\uB2E4\\uB8F0 \\uB54C \\uC544\\uB798\\uCC98\\uB7FC \",(0,n.jsx)(e.code,{children:\"defstruct\"}),\"\\uC5D0\\uB294 \\uD544\\uB4DC\\uC640 \\uCD08\\uAE30\\uAC12\\uC744 \\uC120\\uC5B8\\uD558\\uACE0, \\uD544\\uC694\\uD558\\uB2E4\\uBA74 \",(0,n.jsx)(e.code,{children:\"@type\"}),\"\\uC73C\\uB85C \\uADF8\\uC5D0 \\uB300\\uD55C \\uD0C0\\uC785\\uC744 \\uB367\\uBD99\\uC5EC\\uC900\\uB2E4.\"]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`defmodule Plug.Conn do\n  defstruct adapter: {Plug.MissingAdapter, nil},\n            assigns: %{},\n            body_params: %Unfetched{aspect: :body_params}\n            # \\uC774\\uC678\\uC758 \\uD544\\uB4DC\\uB294 \\uC228\\uAE40\n  \n  @type t :: %__MODULE__{\n    adapter: adapter,\n    assigns: assigns,\n    body_params: params | Unfetched.t()\n    # \\uC774\\uC678\\uC758 \\uD544\\uB4DC\\uB294 \\uC228\\uAE40\n  }\nend\n`})}),`\n`,(0,n.jsx)(e.p,{children:\"\\uC774\\uB7EC\\uB2E4\\uBCF4\\uB2C8 \\uAC01 \\uD544\\uB4DC\\uB97C \\uB450 \\uBC88 \\uC120\\uC5B8\\uD574\\uC57C\\uD55C\\uB2E4. \\uACE0\\uCE60 \\uB54C\\uC5D0\\uB3C4 \\uB450 \\uBC88 \\uACE0\\uCCD0\\uC57C \\uD558\\uB294\\uB370... \\uC0DD\\uAC01\\uD574\\uBCF4\\uB2C8 \\uBCF4\\uD1B5\\uC758 \\uC5B8\\uC5B4\\uB4E4\\uB3C4 \\uCD08\\uAE30\\uAC12\\uC744 \\uC815\\uC758\\uD558\\uB824\\uBA74 \\uADF8\\uB7F0 \\uAC83 \\uAC19\\uAE30\\uB3C4 \\uD558\\uACE0?\"}),`\n`,(0,n.jsxs)(e.p,{children:[`\\uD558\\uC9C0\\uB9CC \\uAD6C\\uC870\\uCCB4\\uB294 \\uBAA8\\uB4C8\\uC744 \\uAE30\\uC900\\uC73C\\uB85C \\uC120\\uC5B8\\uD558\\uBA74\\uC11C, \\uD0C0\\uC785\\uC740 \\uBAA8\\uB4C8 \\uC774\\uB984\\uC73C\\uB85C \\uC120\\uC5B8 \\uBABB\\uD558\\uACE0,\n`,(0,n.jsx)(e.code,{children:\"t\"}),`\\uB97C \\uBD99\\uC5EC\\uC918\\uC57C\\uD558\\uB294 \\uAC74 \\uD655\\uC2E4\\uD788 \\uC774\\uC0C1\\uD558\\uACE0 \\uC5B4\\uC0C9\\uD558\\uB2E4. \\uAC70\\uC758 \\uD45C\\uC900\\uCC98\\uB7FC \\uC4F0\\uACE0 \\uC788\\uC9C0\\uB9CC\n\\uD45C\\uC900\\uC740 \\uC544\\uB2CC \\uB4EF.`]}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uADF8\\uB798\\uC11C \\uD0C0\\uC785\\uC744 \\uC120\\uC5B8\\uD560 \\uB54C \",(0,n.jsx)(e.code,{children:\"String\"}),\"\\uC744 \",(0,n.jsx)(e.code,{children:\"String\"}),\"\\uC774\\uB77C\\uACE0 \\uBD80\\uB97C \\uC218 \\uC5C6\\uB2E4.\"]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`defmodule String do\n  # Typespec\\uC73C\\uB85C String\\uC740 \\uC774\\uB807\\uAC8C \\uC120\\uC5B8\\uD55C\\uB2E4.\n  @type t :: binary\nend\n\n# \\`ends_with?\\`\\uC774\\uB77C\\uB294 \\uD568\\uC218\\uB97C \\uB9CC\\uB4DC\\uB824\\uBA74, \\uC544\\uB798\\uC640 \\uAC19\\uC774 \\`String.t()\\`\\uB85C \\uC120\\uC5B8\\uD574\\uC57C \\uD55C\\uB2E4.\n@spec ends_with?(String.t(), String.t()) :: boolean()\n`})}),`\n`,(0,n.jsxs)(e.p,{children:[\"\\uCD94\\uAC00\\uB85C \\uC704\\uC758 \",(0,n.jsx)(e.code,{children:\"ends_with?/2\"}),\" \\uD568\\uC218\\uC758 \\uC2A4\\uD399\\uC740 \\uAD04\\uD638 \\uC5C6\\uC774 \\uC544\\uB798\\uCC98\\uB7FC \\uC801\\uC5B4\\uB3C4 \\uB418\\uAE34 \\uD558\\uB2E4:\"]}),`\n`,(0,n.jsx)(e.pre,{children:(0,n.jsx)(e.code,{className:\"language-elixir\",children:`@spec ends_with?(String.t, String.t) :: boolean\n`})})]})}function S(d={}){let{wrapper:e}=d.components||{};return e?(0,n.jsx)(e,Object.assign({},d,{children:(0,n.jsx)(h,d)})):h(d)}var k=S;return b(v);})();\n;return Component;"},"_id":"elixir.md","_raw":{"sourceFilePath":"elixir.md","sourceFileName":"elixir.md","sourceFileDir":".","contentType":"markdown","flattenedPath":"elixir"},"type":"Note","slug":"elixir"}},"__N_SSG":true},"page":"/n/[[...slug]]","query":{"slug":["elixir"]},"buildId":"GlTOjBOhO6xWONgruXGi2","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>
