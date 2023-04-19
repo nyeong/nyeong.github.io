@@ -1,7 +1,9 @@
 import { withContentlayer } from "next-contentlayer";
 
 /** @type {import('next').NextConfig } */
-export default {
+const nextConfig = {
     reactStrictMode: true,
-    output: 'export'
+    output: process.env.NODE_ENV === 'production' ? 'export' : 'standalone'
 }
+
+export default process.env.NODE_ENV === 'production' ? nextConfig : withContentlayer(nextConfig)

@@ -4,7 +4,8 @@ import remarkMath from "remark-math";
 import wikiLinkPlugin, { getPermalinks } from "@flowershow/remark-wiki-link";
 import { join } from "path";
 
-const HANASSIG_DIR = "../hanassig";
+const HANASSIG_DIR =
+  process.env.NODE_ENV === "production" ? "hanassig" : "../hanassig";
 const NOTE_DIR = join(HANASSIG_DIR, "notes");
 
 export const Note = defineDocumentType(() => ({

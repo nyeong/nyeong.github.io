@@ -15,7 +15,7 @@ export default function ({notes}) {
 }
 
 export async function getStaticProps() {
-  const notes = allNotes.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
+  const notes = allNotes.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date))).slice(0, 10);
 
   return { props: { notes }}
 }
