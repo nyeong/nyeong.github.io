@@ -60,7 +60,7 @@ export class Note {
             {
               pathFormat: "obsidian-short",
               permalinks: getPermalinks(NOTE_DIR),
-              hrefTemplate: (page) => (page === "index" ? "n" : `n${page}`),
+              hrefTemplate: (page) => (page === "index" ? "/n" : `/n${page}`),
             },
           ],
         ]
