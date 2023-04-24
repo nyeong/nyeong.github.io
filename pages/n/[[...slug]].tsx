@@ -1,49 +1,55 @@
-import Layout from '@/components/layout'
-import { allNotes, type Note } from 'contentlayer/generated'
-import { useMDXComponent } from 'next-contentlayer/hooks'
+import Layout from "@/components/layout"
+import { getAllNotesFrontmatter, getNoteBySlug } from "lib/markdown"
+import { GetStaticProps, GetStaticPaths } from "next"
+import { getMDXComponent } from "mdx-bundler/client"
+import { useMemo } from "react"
+import Giscus from '@giscus/react'
 
-type Params = {
-  note: Note
-}
-
-export default function ({ note }: Params) {
-  const MDXContent = useMDXComponent(note.body.code)
-  return (
-    <Layout>
-      <main>
-        <article>
-          <header>
-            <h1>{note.title}</h1>
-          </header>
-          <MDXContent />
-        </article>
-      </main>
-    </Layout>
-  )
-}
-
-type GetStaticProps = {
-  params: {
-    slug: string[]
-  }
-}
-
-export async function getStaticProps({ params }: GetStaticProps) {
-  const slug = params.slug ? params.slug.join('/') : ''
-  const note = allNotes.find(note => note._raw.flattenedPath === slug)
-
+export const getStaticProps: GetStaticProps = async ({ params: { slug } }) => {
+  const pathToSlug = (words) => (!words ? "index" : words.join("/"))
+  const note = await getNoteBySlug(pathToSlug(slug as string[]))
   return {
     props: {
-      note,
-    }
+      source: note.source,
+      title: note.frontmatter.title,
+    },
   }
 }
 
-export async function getStaticPaths() {
-  const paths = allNotes.map(note => ({ params: { slug: note.slug.split("/") } }))
+export const getStaticPaths: GetStaticPaths = async () => {
+  const frontmatters = await getAllNotesFrontmatter()
 
   return {
-    paths,
+    paths: frontmatters.map((f) => ({ params: { slug: f.slug.split("/") } })),
     fallback: false,
   }
+}
+
+export default function ({ source, title }) {
+  const Component = useMemo(() => getMDXComponent(source), [source])
+  return (
+    <Layout>
+      <article className="prose">
+        <header>
+          <h1>{title}</h1>
+        </header>
+        <Component />
+      </article>
+      <footer>
+        <Giscus
+          repo="nyeong/hanassig"
+          repoId="R_kgDOHBvc-w"
+          category="Giscus"
+          categoryId="DIC_kwDOHBvc-84CV5Xc"
+          mapping="pathname"
+          strict="0"
+          reactionsEnabled="1"
+          emitMetadata="0"
+          inputPosition="top"
+          lang="ko"
+          loading="lazy"
+        />
+      </footer>
+    </Layout>
+  )
 }

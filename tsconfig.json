@@ -17,10 +17,10 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]
+      "@/styles/*": ["styles/*"],
+      "@/lib/*": ["lib/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".contentlayer/generated"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

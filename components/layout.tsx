@@ -1,34 +1,24 @@
-import React from 'react'
-import Link from 'next/link'
-import { siteMetadata } from '@/lib/constants'
+import { siteMetadata } from "lib/constants"
+import Link from "next/link"
 
-export default function({children}) {
+export default function ({ children }) {
   return (
-    <>
-      <nav>
-        <div>
-          <Link href='/'>{siteMetadata.title}</Link>
-        </div>
-        <div>
-          <Link href='/n/'>index</Link>
-          <Link href='/tags'>주제별</Link>
-        </div>
+    <div className="font-serif antialiased container grid grid-cols-1 p-3">
+      <nav className="mb-5">
+        {[
+          ["/", siteMetadata.title, "font-bold"],
+          // ["/tags", "주제별"],
+          ["/n", "index"],
+        ].map(([href, title, style=""]) => (
+          <Link className={[style, "transition-colors text-gray-600 hover:text-gray-900 no-underline pr-2"].join(' ')} href={href} key={href}>{title}</Link>
+        ))}
       </nav>
 
-      <div>
-        {children}
-      </div>
+      <main>{children}</main>
 
       <footer>
-        <ul>
-          <li>
-            <Link href={siteMetadata.repositoryUrl}>Repo</Link>
-          </li>
-          <li>
-            안녕 ©️ <Link href={siteMetadata.licenseUrl}>CC BY-SA</Link>
-          </li>
-        </ul>
+        <p>&copy; {new Date().getFullYear()} An Nyeong. <Link target="_blank" href="https://github.com/nyeong/hanassig/blob/main/LICENSE">CC BY-SA</Link></p>
       </footer>
-    </>
+    </div>
   )
 }

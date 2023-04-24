@@ -1,8 +1,8 @@
+import { join } from "path"
+
+export const HANASSIG_DIR = join(process.cwd(), "hanassig")
+export const NOTE_DIR = join(HANASSIG_DIR, "notes")
+
 export const siteMetadata = {
-  title: '하나씩',
-  author: '안녕',
-  description: '배운 것들을 하나씩 정리합니다',
-  siteUrl: 'https://annyeong.me/',
-  repositoryUrl: 'https://github.com/nyeong/hanassig',
-  licenseUrl: 'https://github.com/nyeong/hanassig/blob/main/LICENSE'
+  title: "하나씩",
 }
