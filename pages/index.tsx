@@ -1,21 +1,36 @@
-import React from 'react';
-import Layout from '@/components/layout'
-import { allNotes } from 'contentlayer/generated';
-import { compareDesc } from 'date-fns';
-import {NoteList} from '@/components/note_link';
+import Layout from "@/components/layout"
+import { GetStaticProps } from "next"
+import { getAllNotesFrontmatter, type Frontmatter } from "@/lib/markdown"
+import Link from "next/link"
 
-export default function ({notes}) {
+type Props = {
+  frontmatters: {title: string, url: string}[]
+}
 
+export default function ({frontmatters}: Props) {
   return (
     <Layout>
-      <h2>최근에 업데이트 됨:</h2>
-      <NoteList notes={notes} />
+      <article className="prose">
+        <h1>하나씩</h1>
+        <h2>최근 고친 글</h2>
+        <ul>
+          {frontmatters.slice(0, 10).map((note) => (
+            <li><Link href={note.url}>{note.title}</Link></li>
+          ))}
+        </ul>
+      </article>
     </Layout>
   )
 }
 
-export async function getStaticProps() {
-  const notes = allNotes.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date))).slice(0, 10);
-
-  return { props: { notes }}
+export const getStaticProps: GetStaticProps = async () => {
+  const frontmatters = (await getAllNotesFrontmatter()).slice(0, 10).map(frontmatter => ({
+    title: frontmatter.title,
+    url: frontmatter.url()
+  }))
+  return {
+    props: {
+      frontmatters
+    },
+  }
 }

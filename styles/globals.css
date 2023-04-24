@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'RIDIBatang';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    body {
+        text-rendering: optimizeLegibility;
+        word-break: keep-all;
+        letter-spacing: .03em;
+    }
+
+    a {
+        @apply text-blue-700 underline
+    }
+}
