@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1">
+
+    <% if description %>
+    <meta name="description" content="<%= description %>" >
+    <% end %>
+    <% if keywords %>
+    <meta name="keywords" content="<%= keywords %>">
+    <% end %>
+
+    <meta property="og:title" content="<%= title %>">
+    <% if description %>
+    <meta property="og:description" content="<%= description %>">
+    <% end %>
+
+    <link rel="stylesheet" type="text/css" href="/styles/index.css">
+
+</head>
+<body>
+    <nav id="topbar">
+        <a href="/">하나씩</a>
+    </nav>
+    <main>
+        <article>
+            <header>
+                <h1><%= title %></h1>
+            </header>
+            <%= body %>
+        </article>
+    </main>
+    <footer>
+        footer
+    </footer>
+</body>
+</html>
